@@ -20,6 +20,8 @@ export default function RootLayout({
       <body>
         {children}
         <NotificationButton />
+        <InstallAppPrompt />
+        <BottomNav />
 
         <Script
           src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
