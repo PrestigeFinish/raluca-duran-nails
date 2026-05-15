@@ -107,7 +107,7 @@ export default function InstallAppPrompt() {
         )}
 
         <button onClick={handleInstall} className="install-main-btn">
-          {isIOS ? "Deschide meniul de partajare" : "Instalează aplicația"}
+         {isIOS ? "Vezi cum instalezi pe iPhone" : "Instalează aplicația"}
         </button>
 
         <button onClick={close} className="install-secondary-btn">
