@@ -6,30 +6,44 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-async function sendPushNotification(title: string, message: string) {
+async function sendBookingPush({
+  clientName,
+  serviceName,
+  appointmentDate,
+  appointmentTime,
+}: {
+  clientName: string;
+  serviceName: string;
+  appointmentDate: string;
+  appointmentTime: string;
+}) {
   const appId = process.env.ONESIGNAL_APP_ID;
   const apiKey = process.env.ONESIGNAL_API_KEY;
+  const adminSubscriptionId = process.env.ONESIGNAL_ADMIN_SUBSCRIPTION_ID;
 
-  if (!appId || !apiKey) {
+  if (!appId || !apiKey || !adminSubscriptionId) {
+    console.log("OneSignal env lipsă. Notificarea nu a fost trimisă.");
     return;
   }
 
-  await fetch("https://api.onesignal.com/notifications", {
+  await fetch("https://onesignal.com/api/v1/notifications", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Key ${apiKey}`,
+      Authorization: `Basic ${apiKey}`,
     },
     body: JSON.stringify({
       app_id: appId,
-      included_segments: ["Subscribed Users"],
+      include_subscription_ids: [adminSubscriptionId],
       headings: {
-        en: title,
+        en: "Programare nouă 💅",
+        ro: "Programare nouă 💅",
       },
       contents: {
-        en: message,
+        en: `${clientName} s-a programat la ${serviceName} pe ${appointmentDate} la ${appointmentTime}.`,
+        ro: `${clientName} s-a programat la ${serviceName} pe ${appointmentDate} la ${appointmentTime}.`,
       },
-      url: "https://raluca-duran-nails.vercel.app/admin",
+      url: "https://cheerful-griffin-245b84.netlify.app/admin",
     }),
   });
 }
@@ -103,25 +117,28 @@ export async function POST(request: Request) {
     const appointment = data?.[0];
     const serviceName = appointment?.services?.name || "serviciu";
 
-    const notificationTitle = "Programare nouă";
-    const notificationMessage = `${client_name} • ${serviceName} • ${appointment_date} la ${appointment_time}`;
-
     await supabase.from("admin_notifications").insert([
       {
-        title: notificationTitle,
-        message: notificationMessage,
+        title: "Programare nouă",
+        message: `${client_name} a făcut o programare pentru ${serviceName} pe ${appointment_date} la ${appointment_time}.`,
         type: "booking",
         is_read: false,
       },
     ]);
 
-    await sendPushNotification(notificationTitle, notificationMessage);
+    await sendBookingPush({
+      clientName: client_name,
+      serviceName,
+      appointmentDate: appointment_date,
+      appointmentTime: appointment_time,
+    });
 
     return NextResponse.json({
       success: true,
       appointment,
     });
-  } catch {
+  } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "A apărut o eroare." }, { status: 500 });
   }
 }
