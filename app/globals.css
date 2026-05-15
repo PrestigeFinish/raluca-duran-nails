@@ -173,3 +173,15 @@ img {
     font-size: 14px;
   }
 }
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .nav-links a:not(.btn-primary) {
+    display: none;
+  }
+}
