@@ -13,7 +13,7 @@ export const metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Raluca Duran Beauty",
+    title: "Raluca Duran Studio",
   },
   icons: {
     icon: "/logo.png",
