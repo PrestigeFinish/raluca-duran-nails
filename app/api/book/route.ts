@@ -6,6 +6,34 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+async function sendPushNotification(title: string, message: string) {
+  const appId = process.env.ONESIGNAL_APP_ID;
+  const apiKey = process.env.ONESIGNAL_API_KEY;
+
+  if (!appId || !apiKey) {
+    return;
+  }
+
+  await fetch("https://api.onesignal.com/notifications", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Key ${apiKey}`,
+    },
+    body: JSON.stringify({
+      app_id: appId,
+      included_segments: ["Subscribed Users"],
+      headings: {
+        en: title,
+      },
+      contents: {
+        en: message,
+      },
+      url: "https://raluca-duran-nails.vercel.app/admin",
+    }),
+  });
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -20,7 +48,13 @@ export async function POST(request: Request) {
       notes,
     } = body;
 
-    if (!service_id || !client_name || !client_phone || !appointment_date || !appointment_time) {
+    if (
+      !service_id ||
+      !client_name ||
+      !client_phone ||
+      !appointment_date ||
+      !appointment_time
+    ) {
       return NextResponse.json({ error: "Date incomplete." }, { status: 400 });
     }
 
@@ -67,15 +101,21 @@ export async function POST(request: Request) {
     }
 
     const appointment = data?.[0];
+    const serviceName = appointment?.services?.name || "serviciu";
+
+    const notificationTitle = "Programare nouă";
+    const notificationMessage = `${client_name} • ${serviceName} • ${appointment_date} la ${appointment_time}`;
 
     await supabase.from("admin_notifications").insert([
       {
-        title: "Programare nouă",
-        message: `${client_name} a făcut o programare pentru ${appointment?.services?.name || "serviciu"} pe ${appointment_date} la ${appointment_time}.`,
+        title: notificationTitle,
+        message: notificationMessage,
         type: "booking",
         is_read: false,
       },
     ]);
+
+    await sendPushNotification(notificationTitle, notificationMessage);
 
     return NextResponse.json({
       success: true,
