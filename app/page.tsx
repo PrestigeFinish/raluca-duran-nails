@@ -17,95 +17,28 @@ export default function Home() {
     <>
       <nav className="navbar">
         <div className="container nav-inner">
-          <img src="/logo.png" alt="Raluca Duran Nails" style={{ height: "80px" }} />
+          <img className="nav-logo" src="/logo.png" alt="Raluca Duran Nails" />
 
           <div className="nav-links">
             <a href="#services">Servicii</a>
-            <a href="#about">Despre</a>
-            <a href="#gallery">Galerie</a>
-            <a href="#contact" className="btn-primary">
+            <a href="#makeup">Make-up</a>
+            <a href="/makeup">Pagina Make-up</a>
+            <a
+              href="https://wa.me/40727707545?text=Bună! Aș dori o programare la Raluca Duran Nails 💅"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
               Programează-te
             </a>
           </div>
         </div>
       </nav>
-      <section className="section">
-  <div className="container">
-    <h2
-      className="hero-title"
-      style={{
-        fontSize: "60px",
-        textAlign: "center",
-        marginBottom: "50px",
-      }}
-    >
-      Ce spun clientele
-    </h2>
-
-    <div className="testimonial-grid">
-      <div className="testimonial-card">
-        <p>
-          “Servicii impecabile, atenție la detalii și un rezultat absolut superb.”
-        </p>
-        <strong>Clientă fericită</strong>
-      </div>
-
-      <div className="testimonial-card">
-        <p>
-          “Un studio elegant, atmosferă plăcută și manichiuri care rezistă perfect.”
-        </p>
-        <strong>Clientă fericită</strong>
-      </div>
-
-      <div className="testimonial-card">
-        <p>
-          “Raluca lucrează cu foarte multă grijă și pasiune. Recomand cu drag.”
-        </p>
-        <strong>Clientă fericită</strong>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section className="section">
-  <div className="container">
-    <h2
-      className="hero-title"
-      style={{
-        fontSize: "60px",
-        textAlign: "center",
-        marginBottom: "50px",
-      }}
-    >
-      Întrebări frecvente
-    </h2>
-
-    <div className="faq-grid">
-      <div className="faq-card">
-        <strong>Cum fac programare?</strong>
-        <p>Direct prin WhatsApp, rapid și simplu.</p>
-      </div>
-
-      <div className="faq-card">
-        <strong>Faceți nail art?</strong>
-        <p>Da, în funcție de modelul dorit.</p>
-      </div>
-
-      <div className="faq-card">
-        <strong>Unde este studioul?</strong>
-        <p>Studio boutique în Ploiești.</p>
-      </div>
-
-      <div className="faq-card">
-        <strong>Pot veni cu model ales?</strong>
-        <p>Da, poți trimite inspirația înainte de programare.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
       <main>
         <section className="hero">
+          <img className="bg-logo" src="/logo.png" alt="" />
+
           <div className="container">
             <div className="hero-content">
               <p className="hero-subtitle">PLOIEȘTI</p>
@@ -122,7 +55,7 @@ export default function Home() {
               </p>
 
               <a
-                href="https://wa.me/40727707545"
+                href="https://wa.me/40727707545?text=Bună! Aș dori o programare la Raluca Duran Nails 💅"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary"
@@ -135,16 +68,7 @@ export default function Home() {
 
         <section className="section" id="services">
           <div className="container">
-            <h2
-              className="hero-title"
-              style={{
-                fontSize: "60px",
-                textAlign: "center",
-                marginBottom: "50px",
-              }}
-            >
-              Servicii & Prețuri
-            </h2>
+            <h2 className="hero-title section-title">Servicii & Prețuri</h2>
 
             <div className="services-grid">
               {services.map((service, index) => (
@@ -157,123 +81,38 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section" id="about">
-          <div
-            className="container"
-            style={{
-              textAlign: "center",
-              maxWidth: "900px",
-            }}
-          >
-            <h2
-              className="hero-title"
-              style={{
-                fontSize: "60px",
-                marginBottom: "30px",
-              }}
-            >
-              Despre studio
-            </h2>
-
-            <p
-              style={{
-                fontSize: "20px",
-                lineHeight: "1.8",
-                color: "#66584d",
-              }}
-            >
-              Raluca Duran Nails este un studio boutique din Ploiești dedicat
-              manichiurilor elegante, feminine și atent lucrate. Fiecare clientă
-              beneficiază de atenție, confort și servicii realizate cu grijă
-              pentru detalii.
-            </p>
-          </div>
-        </section>
-
-        <section className="section" id="gallery">
+        <section className="section" id="makeup">
           <div className="container">
-            <h2
-              className="hero-title"
-              style={{
-                fontSize: "60px",
-                textAlign: "center",
-              }}
-            >
-              Galerie
-            </h2>
-
-            <div className="gallery-grid">
-             <img
-  className="gallery-item"
-  src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80"
-  alt="Nail design"
-/>
-
-<img
-  className="gallery-item"
-  src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80"
-  alt="Luxury nails"
-/>
-
-<img
-  className="gallery-item"
-  src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80"
-  alt="Elegant manicure"
-/>
+            <div className="feature-card">
+              <p className="hero-subtitle">NEW BEAUTY SERVICE</p>
+              <h2 className="hero-title section-title" style={{ marginBottom: "24px" }}>
+                Make-up by Raluca Duran
+              </h2>
+              <p className="hero-text" style={{ margin: "0 auto 32px" }}>
+                Pe lângă nail studio, Raluca oferă și servicii de make-up pentru
+                evenimente, ședințe foto și momente speciale.
+              </p>
+              <a href="/makeup" className="btn-primary">
+                Vezi pagina de make-up
+              </a>
             </div>
           </div>
         </section>
 
-        <section className="section" id="contact">
-          <div
-            className="container"
-            style={{
-              textAlign: "center",
-            }}
-          >
-            <h2
-              className="hero-title"
-              style={{
-                fontSize: "60px",
-                marginBottom: "20px",
-              }}
-            >
-              Contact
-            </h2>
+        <section className="section">
+          <div className="container">
+            <h2 className="hero-title section-title">Galerie</h2>
 
-            <p
-              style={{
-                fontSize: "20px",
-                marginBottom: "16px",
-                color: "#6d5d50",
-              }}
-            >
-              Ploiești
-            </p>
-
-            <p
-              style={{
-                fontSize: "18px",
-                marginBottom: "30px",
-                color: "#8c7562",
-              }}
-            >
-              Instagram coming soon
-            </p>
-
-            <a
-              href="https://wa.me/40727707545"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-            >
-              Contactează-mă pe WhatsApp
-            </a>
+            <div className="gallery-grid">
+              <img className="gallery-item" src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80" alt="Nail design" />
+              <img className="gallery-item" src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80" alt="Luxury nails" />
+              <img className="gallery-item" src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80" alt="Elegant manicure" />
+            </div>
           </div>
         </section>
 
         <footer className="footer">
-          © 2025 Raluca Duran Nails • Ploiești
+          © 2026 Raluca Duran Nails • Ploiești
         </footer>
       </main>
     </>
