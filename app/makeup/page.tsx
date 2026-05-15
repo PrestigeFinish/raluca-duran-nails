@@ -10,7 +10,7 @@ export default function MakeupPage() {
     <>
       <nav className="navbar">
         <div className="container nav-inner">
-          <img className="nav-logo" src="//logo-makeup.png" alt="Raluca Duran Beauty" />
+          <img className="nav-logo" src="/logo-makeup.png" alt="Raluca Duran Beauty" />
 
           <div className="nav-links">
             <a href="/">Nails</a>
@@ -29,7 +29,7 @@ export default function MakeupPage() {
 
       <main>
         <section className="hero">
-          <img className="bg-logo" src="//logo-makeup.png" alt="" />
+          <img className="bg-logo" src="/logo-makeup.png" alt="" />
 
           <div className="container">
             <div className="hero-content">
