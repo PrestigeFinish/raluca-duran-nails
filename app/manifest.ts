@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Raluca Duran Beauty",
-    short_name: "RalucaDuran",
+    name: "RalucaDuranStudio",
+    short_name: "RalucaDuranStudio",
     description: "Programări nails și make-up by Raluca Duran",
     start_url: "/",
     scope: "/",
@@ -25,7 +25,6 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/logo.png",
         sizes: "180x180",
         type: "image/png",
-        purpose: "any",
       },
     ],
   };
