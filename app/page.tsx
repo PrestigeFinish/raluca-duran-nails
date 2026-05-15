@@ -118,7 +118,12 @@ export default function Home() {
               Ploiești • Nail appointments by Raluca Duran
             </p>
 
-            <a href="#" className="btn-primary">
+<a
+  href="https://wa.me/40727707545"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="btn-primary"
+>
               Contactează-mă
             </a>
           </div>
