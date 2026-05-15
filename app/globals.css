@@ -543,3 +543,50 @@ img { max-width: 100%; display: block; }
     position: static;
   }
 }
+.admin-input {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(183, 131, 110, 0.25);
+  background: white;
+  margin-top: 10px;
+  font: inherit;
+}
+
+.gallery-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.gallery-admin-card {
+  background: rgba(255, 248, 243, 0.95);
+  border: 1px solid rgba(183, 131, 110, 0.22);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.gallery-admin-card img {
+  height: 220px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+.gallery-admin-card button {
+  border: 0;
+  background: #b7836e;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .gallery-admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
