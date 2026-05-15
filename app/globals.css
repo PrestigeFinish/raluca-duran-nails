@@ -1,10 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
 
@@ -24,9 +20,7 @@ img { max-width: 100%; display: block; }
   padding: 0 42px;
 }
 
-.hero-title {
-  font-family: 'Cormorant Garamond', serif;
-}
+.hero-title { font-family: 'Cormorant Garamond', serif; }
 
 .navbar {
   width: 100%;
@@ -53,18 +47,28 @@ img { max-width: 100%; display: block; }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 28px;
-  font-weight: 500;
+  gap: 26px;
+  font-weight: 600;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 16px 28px;
+  border-radius: 14px;
+  font-weight: 800;
+  display: inline-block;
 }
 
 .btn-primary {
   background: #b7836e;
   color: white;
-  padding: 16px 28px;
-  border-radius: 14px;
-  font-weight: 700;
-  display: inline-block;
   box-shadow: 0 14px 28px rgba(183, 131, 110, 0.24);
+}
+
+.btn-secondary {
+  background: rgba(255, 248, 243, 0.9);
+  color: #8d5f4e;
+  border: 1px solid rgba(183, 131, 110, 0.25);
 }
 
 .hero {
@@ -77,21 +81,21 @@ img { max-width: 100%; display: block; }
 }
 
 .bg-logo {
-  position: fixed;
-  right: 30px;
-  top: 130px;
-  width: 58vw;
-  max-width: 900px;
+  position: relative;
+  width: 43vw;
+  max-width: 620px;
+  min-width: 360px;
   opacity: 1;
-  z-index: 0;
-  pointer-events: none;
+  z-index: 1;
+  margin-left: auto;
 }
 
-.hero .container,
-.section .container,
-.footer .container {
+.hero .container {
   position: relative;
   z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 
 .hero-content {
@@ -106,7 +110,7 @@ img { max-width: 100%; display: block; }
   letter-spacing: 6px;
   text-transform: uppercase;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .hero-title-main {
@@ -123,140 +127,180 @@ img { max-width: 100%; display: block; }
   color: #3f342f;
 }
 
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
 .section {
   padding: 95px 0;
   position: relative;
   z-index: 2;
-  background: rgba(251, 244, 238, 0.72);
+}
+
+.section-soft {
+  background: rgba(255, 248, 243, 0.62);
 }
 
 .section-title {
-  font-size: 48px;
-  margin-bottom: 28px;
+  font-size: 54px;
+  margin-bottom: 22px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-align: center;
 }
 
-.services-grid {
+.section-lead {
+  max-width: 760px;
+  margin: 0 auto 42px;
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.75;
+  color: #65554c;
+}
+
+.services-grid,
+.cards-grid,
+.faq-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px 30px;
+  gap: 18px;
+}
+
+.service-card,
+.info-card,
+.faq-card,
+.testimonial-card {
+  background: rgba(255, 248, 243, 0.9);
+  border: 1px solid rgba(183, 131, 110, 0.22);
+  padding: 22px 24px;
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(58, 39, 31, 0.04);
 }
 
 .service-card {
-  background: rgba(255, 248, 243, 0.86);
-  border: 1px solid rgba(183, 131, 110, 0.22);
-  padding: 16px 22px;
-  border-radius: 8px;
   display: flex;
   justify-content: space-between;
+  gap: 16px;
 }
 
-.feature-card {
-  background: rgba(255, 248, 243, 0.88);
-  border: 1px solid rgba(183, 131, 110, 0.22);
-  padding: 38px;
-  border-radius: 12px;
+.info-card h3,
+.faq-card strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.info-card p,
+.faq-card p,
+.testimonial-card p {
+  color: #65554c;
+  line-height: 1.7;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.testimonial-card strong {
+  display: block;
+  margin-top: 18px;
+  color: #b7836e;
 }
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 
 .gallery-item {
-  height: 220px;
+  height: 300px;
   width: 100%;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 14px;
 }
 
 .footer {
-  padding: 34px 0;
-  background: rgba(251, 244, 238, 0.9);
-  position: relative;
-  z-index: 3;
+  padding: 46px 0;
+  background: rgba(255, 248, 243, 0.9);
   text-align: center;
+  color: #7b695d;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 0 22px;
-  }
+  .container { padding: 0 22px; }
 
-  .nav-inner {
-    height: 96px;
-  }
+  .nav-inner { height: 96px; }
 
-  .nav-logo {
-    height: 78px;
-  }
+  .nav-logo { height: 78px; }
 
-  .nav-links a:not(.btn-primary) {
-    display: none;
-  }
+  .nav-links a:not(.btn-primary) { display: none; }
 
-  .btn-primary {
-    padding: 14px 22px;
-    border-radius: 18px;
-    font-size: 16px;
+  .btn-primary,
+  .btn-secondary {
+    padding: 14px 20px;
+    border-radius: 16px;
+    font-size: 15px;
   }
 
   .hero {
     min-height: auto;
-    padding-top: 130px;
+    padding-top: 120px;
     padding-bottom: 70px;
     display: block;
   }
 
+  .hero .container {
+    display: flex;
+    flex-direction: column;
+  }
+
   .bg-logo {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    transform: none;
+    order: 1;
     width: 100%;
     max-width: 420px;
-    margin: 40px auto 28px;
-    opacity: 1;
-    z-index: 1;
+    min-width: 0;
+    margin: 28px auto 28px;
   }
 
   .hero-content {
-    margin-top: 0;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
+    order: 2;
     max-width: 100%;
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-subtitle {
-    font-size: 13px;
-    letter-spacing: 5px;
-    margin-bottom: 16px;
   }
 
   .hero-title-main {
     font-size: 46px;
-    line-height: 1;
-    margin-bottom: 22px;
   }
 
   .hero-text {
-    font-size: 19px;
-    line-height: 1.55;
-    margin-bottom: 28px;
+    font-size: 18px;
   }
 
   .services-grid,
+  .cards-grid,
+  .faq-grid,
+  .testimonial-grid,
   .gallery-grid {
     grid-template-columns: 1fr;
   }
 
+  .section {
+    padding: 70px 0;
+  }
+
   .section-title {
-    font-size: 34px;
+    font-size: 36px;
   }
 }
