@@ -1,18 +1,18 @@
+import OneSignalInit from "../components/OneSignalInit";
+import "./globals.css";
+
 export const metadata = {
   title: "Raluca Duran Nails | Nail Studio Ploiești",
   description:
-    "Raluca Duran Nails - nail studio premium în Ploiești. Semi cu apex, gel, construcție, slim nails, întreținere și nail art.",
+    "Raluca Duran Nails - nail studio premium în Ploiești. Semi cu apex, gel, construcție, slim nails, întreținere, nail art și make-up.",
   keywords: [
     "unghii Ploiești",
     "manichiură Ploiești",
     "nail studio Ploiești",
-    "gel Ploiești",
-    "semi permanentă Ploiești",
+    "make-up Ploiești",
     "Raluca Duran Nails",
   ],
 };
-
-import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -21,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ro">
-      <body>{children}</body>
+      <body>
+        <OneSignalInit />
+        {children}
+      </body>
     </html>
   );
 }
