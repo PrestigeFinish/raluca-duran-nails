@@ -6,44 +6,55 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-async function sendBookingPush({
+async function sendBookingEmail({
   clientName,
+  clientPhone,
+  clientEmail,
   serviceName,
   appointmentDate,
   appointmentTime,
+  notes,
 }: {
   clientName: string;
+  clientPhone: string;
+  clientEmail?: string;
   serviceName: string;
   appointmentDate: string;
   appointmentTime: string;
+  notes?: string;
 }) {
-  const appId = process.env.ONESIGNAL_APP_ID;
-  const apiKey = process.env.ONESIGNAL_API_KEY;
-  const adminSubscriptionId = process.env.ONESIGNAL_ADMIN_SUBSCRIPTION_ID;
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const adminEmail = process.env.ADMIN_EMAIL || "mihaela_bogza@yahoo.com";
 
-  if (!appId || !apiKey || !adminSubscriptionId) {
-    console.log("OneSignal env lipsă. Notificarea nu a fost trimisă.");
+  if (!resendApiKey) {
+    console.log("RESEND_API_KEY lipsește. Emailul nu a fost trimis.");
     return;
   }
 
-  await fetch("https://onesignal.com/api/v1/notifications", {
+  await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
+      Authorization: `Bearer ${resendApiKey}`,
       "Content-Type": "application/json",
-      Authorization: `Basic ${apiKey}`,
     },
     body: JSON.stringify({
-      app_id: appId,
-      include_subscription_ids: [adminSubscriptionId],
-      headings: {
-        en: "Programare nouă 💅",
-        ro: "Programare nouă 💅",
-      },
-      contents: {
-        en: `${clientName} s-a programat la ${serviceName} pe ${appointmentDate} la ${appointmentTime}.`,
-        ro: `${clientName} s-a programat la ${serviceName} pe ${appointmentDate} la ${appointmentTime}.`,
-      },
-      url: "https://cheerful-griffin-245b84.netlify.app/admin",
+      from: "Raluca Beauty <onboarding@resend.dev>",
+      to: [adminEmail],
+      subject: "Programare nouă - Raluca Beauty 💅",
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2>Programare nouă 💅</h2>
+          <p>Ai primit o programare nouă pe site.</p>
+
+          <p><strong>Client:</strong> ${clientName}</p>
+          <p><strong>Telefon:</strong> ${clientPhone}</p>
+          <p><strong>Email:</strong> ${clientEmail || "Nu a fost completat"}</p>
+          <p><strong>Serviciu:</strong> ${serviceName}</p>
+          <p><strong>Data:</strong> ${appointmentDate}</p>
+          <p><strong>Ora:</strong> ${appointmentTime}</p>
+          <p><strong>Observații:</strong> ${notes || "Fără observații"}</p>
+        </div>
+      `,
     }),
   });
 }
@@ -126,11 +137,14 @@ export async function POST(request: Request) {
       },
     ]);
 
-    await sendBookingPush({
+    await sendBookingEmail({
       clientName: client_name,
+      clientPhone: client_phone,
+      clientEmail: client_email,
       serviceName,
       appointmentDate: appointment_date,
       appointmentTime: appointment_time,
+      notes,
     });
 
     return NextResponse.json({
