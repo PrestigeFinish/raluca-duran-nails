@@ -369,3 +369,80 @@ img { max-width: 100%; display: block; }
     grid-template-columns: repeat(2, 1fr);
   }
 }
+.admin-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-card {
+  background: rgba(255, 248, 243, 0.95);
+  border: 1px solid rgba(183, 131, 110, 0.22);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 14px 30px rgba(58, 39, 31, 0.05);
+}
+
+.admin-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.admin-card-header strong {
+  font-size: 22px;
+}
+
+.admin-card-header p,
+.admin-details p {
+  color: #65554c;
+  line-height: 1.7;
+}
+
+.status-badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.status-badge.pending {
+  background: #fff0d6;
+  color: #9a6500;
+}
+
+.status-badge.confirmed {
+  background: #e7f7e7;
+  color: #247a28;
+}
+
+.status-badge.completed {
+  background: #e6eefc;
+  color: #2450a4;
+}
+
+.status-badge.cancelled {
+  background: #fde2e2;
+  color: #9e2727;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.admin-actions button,
+.admin-actions a {
+  border: 0;
+  background: #b7836e;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+}
