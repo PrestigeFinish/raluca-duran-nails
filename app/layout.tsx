@@ -11,14 +11,14 @@ export const metadata = {
   manifest: "/manifest.webmanifest",
   themeColor: "#b7836e",
   appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Raluca Duran Studio",
-  },
-  icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
-  },
+  capable: true,
+  statusBarStyle: "default",
+  title: "Raluca Beauty",
+},
+icons: {
+  icon: "/logo.png",
+  apple: "/logo.png",
+},
 };
 
 export default function RootLayout({
