@@ -304,3 +304,68 @@ img { max-width: 100%; display: block; }
     font-size: 36px;
   }
 }
+.booking-form {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+.booking-form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(183, 131, 110, 0.25);
+  background: rgba(255, 248, 243, 0.95);
+  font: inherit;
+}
+
+.booking-form textarea {
+  min-height: 120px;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.hour-btn {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(183, 131, 110, 0.25);
+  background: rgba(255, 248, 243, 0.95);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.hour-btn.active {
+  background: #b7836e;
+  color: white;
+}
+
+.hour-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.booking-message {
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(183, 131, 110, 0.12);
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .hours-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
