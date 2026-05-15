@@ -90,14 +90,15 @@ export default function InstallAppPrompt() {
         </p>
 
         {isIOS && showIOSGuide && (
-          <div className="install-steps">
-            <p><strong>Pe iPhone:</strong></p>
-            <p>1. Apasă butonul <strong>Partajare / Share</strong>.</p>
-            <p>2. Apasă <strong>Mai multe</strong> dacă nu vezi opțiunea.</p>
-            <p>3. Alege <strong>Adaugă pe ecranul principal</strong>.</p>
-            <p>4. Apasă <strong>Adaugă</strong>.</p>
-          </div>
-        )}
+  <div className="install-steps">
+    <p><strong>Pe iPhone:</strong></p>
+    <p>1. Apasă cele <strong>3 puncte</strong> din bara browserului.</p>
+    <p>2. Alege <strong>Partajare</strong>.</p>
+    <p>3. Derulează sau apasă <strong>Mai multe</strong>.</p>
+    <p>4. Alege <strong>Adaugă pe ecranul principal</strong>.</p>
+    <p>5. Apasă <strong>Adaugă</strong>.</p>
+  </div>
+)}
 
         {!isIOS && (
           <p className="install-note">
