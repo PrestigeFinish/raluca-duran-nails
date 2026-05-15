@@ -27,6 +27,7 @@ function ProgramareContent() {
   const selectedCategory = searchParams.get("category");
 
   const [services, setServices] = useState<any[]>([]);
+  const [blockedDates, setBlockedDates] = useState<string[]>([]);
   const [serviceId, setServiceId] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -45,7 +46,7 @@ function ProgramareContent() {
       : "Programare";
 
   useEffect(() => {
-    async function loadServices() {
+    async function loadInitialData() {
       let query = supabase
         .from("services")
         .select("*")
@@ -55,17 +56,31 @@ function ProgramareContent() {
         query = query.eq("category", selectedCategory);
       }
 
-      const { data } = await query.order("category").order("name");
+      const { data: servicesData } = await query.order("category").order("name");
 
-      setServices(data || []);
+      const { data: blockedData } = await supabase
+        .from("blocked_days")
+        .select("blocked_date");
+
+      setServices(servicesData || []);
+      setBlockedDates((blockedData || []).map((d: any) => d.blocked_date));
     }
 
-    loadServices();
+    loadInitialData();
   }, [selectedCategory]);
 
   useEffect(() => {
     async function loadBookedHours() {
       if (!date) return;
+
+      if (blockedDates.includes(date)) {
+        setBookedHours([]);
+        setTime("");
+        setMessage("Zi indisponibilă pentru programări.");
+        return;
+      }
+
+      setMessage("");
 
       const { data } = await supabase
         .from("appointments")
@@ -79,11 +94,15 @@ function ProgramareContent() {
     }
 
     loadBookedHours();
-  }, [date]);
+  }, [date, blockedDates]);
 
   async function submitBooking(e: React.FormEvent) {
     e.preventDefault();
-    setMessage("");
+
+    if (blockedDates.includes(date)) {
+      setMessage("Ziua selectată este indisponibilă.");
+      return;
+    }
 
     const response = await fetch("/api/book", {
       method: "POST",
@@ -108,9 +127,7 @@ function ProgramareContent() {
       return;
     }
 
-    setMessage(
-      "Programarea a fost trimisă cu succes. Raluca te va contacta pentru confirmare."
-    );
+    setMessage("Programarea a fost trimisă cu succes.");
     setServiceId("");
     setDate("");
     setTime("");
@@ -127,17 +144,21 @@ function ProgramareContent() {
           <h1 className="hero-title section-title">{title}</h1>
 
           <p className="section-lead">
-            Alege serviciul, data și ora dorită. Programarea rămâne în
-            așteptare până la confirmarea Ralucăi.
+            Alege serviciul, data și ora dorită.
           </p>
 
-          <div className="hero-actions" style={{ justifyContent: "center", marginBottom: "34px" }}>
+          <div
+            className="hero-actions"
+            style={{ justifyContent: "center", marginBottom: "34px" }}
+          >
             <a href="/programare?category=nails" className="btn-secondary">
               Nails
             </a>
+
             <a href="/programare?category=makeup" className="btn-secondary">
               Make-up
             </a>
+
             <a href="/programare" className="btn-secondary">
               Toate
             </a>
@@ -152,6 +173,7 @@ function ProgramareContent() {
                 required
               >
                 <option value="">Alege serviciul</option>
+
                 {services.map((service) => (
                   <option key={service.id} value={service.id}>
                     {service.category === "nails" ? "Nails" : "Make-up"} —{" "}
@@ -178,17 +200,18 @@ function ProgramareContent() {
               Ora
               <div className="hours-grid">
                 {hours.map((hour) => {
-                  const disabled = bookedHours.includes(hour);
+                  const disabled =
+                    bookedHours.includes(hour) || blockedDates.includes(date);
 
                   return (
                     <button
-                      type="button"
                       key={hour}
+                      type="button"
                       disabled={disabled}
                       onClick={() => setTime(hour)}
                       className={time === hour ? "hour-btn active" : "hour-btn"}
                     >
-                      {disabled ? `${hour} ocupat` : hour}
+                      {disabled ? "Indisponibil" : hour}
                     </button>
                   );
                 })}
@@ -214,7 +237,7 @@ function ProgramareContent() {
             </label>
 
             <label>
-              Email opțional
+              Email
               <input
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
@@ -223,7 +246,10 @@ function ProgramareContent() {
 
             <label>
               Observații
-              <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+              />
             </label>
 
             <button className="btn-primary" type="submit" disabled={!time}>
