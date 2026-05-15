@@ -1,3 +1,4 @@
+import GallerySection from "@/components/GallerySection";
 export default function MakeupPage() {
   const makeupServices = [
     { name: "Make-up de zi", price: "Preț la cerere" },
