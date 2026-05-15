@@ -10,8 +10,7 @@
     "lucide-react": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "react-onesignal": "latest"
+    "react-dom": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",
