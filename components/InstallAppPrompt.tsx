@@ -7,10 +7,15 @@ export default function InstallAppPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const [showIOSGuide, setShowIOSGuide] = useState(false);
 
   useEffect(() => {
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const ios = /iphone|ipad|ipod/.test(userAgent);
+    const ua = window.navigator.userAgent.toLowerCase();
+
+    const ios =
+      /iphone|ipad|ipod/.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
     const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone === true;
@@ -18,26 +23,32 @@ export default function InstallAppPrompt() {
     setIsIOS(ios);
     setIsStandalone(standalone);
 
-    const dismissed = localStorage.getItem("install_prompt_dismissed");
+    const dismissed = localStorage.getItem("raluca_install_dismissed");
 
     if (!dismissed && !standalone) {
-      const timer = setTimeout(() => setShow(true), 5000);
+      const timer = setTimeout(() => setShow(true), 3500);
       return () => clearTimeout(timer);
     }
 
-    window.addEventListener("beforeinstallprompt", (e: any) => {
+    const handleBeforeInstallPrompt = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
-    });
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    };
   }, []);
 
-  async function installApp() {
+  async function handleInstall() {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const result = await deferredPrompt.userChoice;
 
       if (result.outcome === "accepted") {
-        localStorage.setItem("install_prompt_dismissed", "yes");
+        localStorage.setItem("raluca_install_dismissed", "yes");
         setShow(false);
       }
 
@@ -45,13 +56,27 @@ export default function InstallAppPrompt() {
       return;
     }
 
-    if (isIOS) {
-      setShow(true);
+    if (isIOS && navigator.share) {
+      try {
+        await navigator.share({
+          title: "Raluca Duran Beauty",
+          text: "Adaugă Raluca Duran Beauty pe ecranul principal pentru programări rapide, oferte și notificări.",
+          url: window.location.href,
+        });
+
+        setShowIOSGuide(true);
+      } catch {
+        setShowIOSGuide(true);
+      }
+
+      return;
     }
+
+    setShowIOSGuide(true);
   }
 
   function close() {
-    localStorage.setItem("install_prompt_dismissed", "yes");
+    localStorage.setItem("raluca_install_dismissed", "yes");
     setShow(false);
   }
 
@@ -60,28 +85,33 @@ export default function InstallAppPrompt() {
   return (
     <div className="install-overlay">
       <div className="install-card">
+        <img src="/logo.png" alt="Raluca Duran Beauty" className="install-logo" />
+
         <h2>Intră direct în aplicație</h2>
 
         <p>
-          Adaugă <strong>Raluca Duran Beauty</strong> pe ecranul principal ca să
-          intri rapid la programări, servicii, nails și make-up.
+          Adaugă <strong>Raluca Duran Beauty</strong> pe ecranul principal pentru
+          programări rapide, oferte speciale și notificări.
         </p>
 
-        {isIOS ? (
+        {isIOS && showIOSGuide && (
           <div className="install-steps">
             <p><strong>Pe iPhone:</strong></p>
-            <p>1. Apasă butonul <strong>Share</strong> din Safari.</p>
-            <p>2. Alege <strong>Add to Home Screen</strong>.</p>
-            <p>3. Deschide site-ul ca aplicație.</p>
+            <p>1. Apasă butonul <strong>Partajare / Share</strong>.</p>
+            <p>2. Apasă <strong>Mai multe</strong> dacă nu vezi opțiunea.</p>
+            <p>3. Alege <strong>Adaugă pe ecranul principal</strong>.</p>
+            <p>4. Apasă <strong>Adaugă</strong>.</p>
           </div>
-        ) : (
+        )}
+
+        {!isIOS && (
           <p className="install-note">
-            Pe Android, apasă butonul de mai jos pentru instalare.
+            Pe Android, butonul de mai jos deschide instalarea aplicației.
           </p>
         )}
 
-        <button onClick={installApp} className="install-main-btn">
-          {isIOS ? "Arată pașii pentru iPhone" : "Instalează aplicația"}
+        <button onClick={handleInstall} className="install-main-btn">
+          {isIOS ? "Deschide meniul de partajare" : "Instalează aplicația"}
         </button>
 
         <button onClick={close} className="install-secondary-btn">
