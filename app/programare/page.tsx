@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -21,7 +22,10 @@ const hours = [
   "18:00",
 ];
 
-export default function ProgramarePage() {
+function ProgramareContent() {
+  const searchParams = useSearchParams();
+  const selectedCategory = searchParams.get("category");
+
   const [services, setServices] = useState<any[]>([]);
   const [serviceId, setServiceId] = useState("");
   const [date, setDate] = useState("");
@@ -33,19 +37,31 @@ export default function ProgramarePage() {
   const [notes, setNotes] = useState("");
   const [message, setMessage] = useState("");
 
+  const title =
+    selectedCategory === "makeup"
+      ? "Programare Make-up"
+      : selectedCategory === "nails"
+      ? "Programare Nails"
+      : "Programare";
+
   useEffect(() => {
     async function loadServices() {
-      const { data } = await supabase
+      let query = supabase
         .from("services")
         .select("*")
-        .eq("is_active", true)
-        .order("category");
+        .eq("is_active", true);
+
+      if (selectedCategory === "nails" || selectedCategory === "makeup") {
+        query = query.eq("category", selectedCategory);
+      }
+
+      const { data } = await query.order("category").order("name");
 
       setServices(data || []);
     }
 
     loadServices();
-  }, []);
+  }, [selectedCategory]);
 
   useEffect(() => {
     async function loadBookedHours() {
@@ -57,7 +73,9 @@ export default function ProgramarePage() {
         .eq("appointment_date", date)
         .neq("status", "cancelled");
 
-      setBookedHours((data || []).map((item: any) => item.appointment_time.slice(0, 5)));
+      setBookedHours(
+        (data || []).map((item: any) => item.appointment_time.slice(0, 5))
+      );
     }
 
     loadBookedHours();
@@ -90,7 +108,9 @@ export default function ProgramarePage() {
       return;
     }
 
-    setMessage("Programarea a fost trimisă cu succes. Raluca te va contacta pentru confirmare.");
+    setMessage(
+      "Programarea a fost trimisă cu succes. Raluca te va contacta pentru confirmare."
+    );
     setServiceId("");
     setDate("");
     setTime("");
@@ -104,20 +124,38 @@ export default function ProgramarePage() {
     <main>
       <section className="section" style={{ paddingTop: "160px" }}>
         <div className="container">
-          <h1 className="hero-title section-title">Programare</h1>
+          <h1 className="hero-title section-title">{title}</h1>
+
           <p className="section-lead">
-            Alege serviciul, data și ora dorită. Programarea rămâne în așteptare
-            până la confirmarea Ralucăi.
+            Alege serviciul, data și ora dorită. Programarea rămâne în
+            așteptare până la confirmarea Ralucăi.
           </p>
+
+          <div className="hero-actions" style={{ justifyContent: "center", marginBottom: "34px" }}>
+            <a href="/programare?category=nails" className="btn-secondary">
+              Nails
+            </a>
+            <a href="/programare?category=makeup" className="btn-secondary">
+              Make-up
+            </a>
+            <a href="/programare" className="btn-secondary">
+              Toate
+            </a>
+          </div>
 
           <form onSubmit={submitBooking} className="booking-form">
             <label>
               Serviciu
-              <select value={serviceId} onChange={(e) => setServiceId(e.target.value)} required>
+              <select
+                value={serviceId}
+                onChange={(e) => setServiceId(e.target.value)}
+                required
+              >
                 <option value="">Alege serviciul</option>
                 {services.map((service) => (
                   <option key={service.id} value={service.id}>
-                    {service.category === "nails" ? "Nails" : "Make-up"} — {service.name} ({service.price})
+                    {service.category === "nails" ? "Nails" : "Make-up"} —{" "}
+                    {service.name} ({service.price})
                   </option>
                 ))}
               </select>
@@ -159,17 +197,28 @@ export default function ProgramarePage() {
 
             <label>
               Nume
-              <input value={clientName} onChange={(e) => setClientName(e.target.value)} required />
+              <input
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+                required
+              />
             </label>
 
             <label>
               Telefon
-              <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} required />
+              <input
+                value={clientPhone}
+                onChange={(e) => setClientPhone(e.target.value)}
+                required
+              />
             </label>
 
             <label>
               Email opțional
-              <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} />
+              <input
+                value={clientEmail}
+                onChange={(e) => setClientEmail(e.target.value)}
+              />
             </label>
 
             <label>
@@ -186,5 +235,13 @@ export default function ProgramarePage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function ProgramarePage() {
+  return (
+    <Suspense>
+      <ProgramareContent />
+    </Suspense>
   );
 }
