@@ -1,9 +1,10 @@
-import OneSignalInit from "../components/OneSignalInit";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata = {
   title: "Raluca Duran Nails | Nail Studio Ploiești",
-  description: "...",
+  description:
+    "Raluca Duran Nails - nail studio premium în Ploiești. Semi cu apex, gel, construcție, slim nails, întreținere, nail art și make-up.",
 };
 
 export default function RootLayout({
@@ -14,8 +15,33 @@ export default function RootLayout({
   return (
     <html lang="ro">
       <body>
-        <OneSignalInit />
         {children}
+
+        <Script
+          src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+          strategy="afterInteractive"
+        />
+
+        <Script id="onesignal-init" strategy="afterInteractive">
+          {`
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            window.OneSignalDeferred.push(async function(OneSignal) {
+              await OneSignal.init({
+                appId: "82336a62-54d3-4c3b-951f-f619653fbf94",
+              });
+
+              window.requestRalucaNotifications = async function() {
+                await OneSignal.Notifications.requestPermission();
+              };
+            });
+          `}
+        </Script>
+
+        <button
+          id="onesignal-button"
+          onClick={() => {}}
+          style={{ display: "none" }}
+        />
       </body>
     </html>
   );
