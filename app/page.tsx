@@ -29,6 +29,80 @@ export default function Home() {
           </div>
         </div>
       </nav>
+      <section className="section">
+  <div className="container">
+    <h2
+      className="hero-title"
+      style={{
+        fontSize: "60px",
+        textAlign: "center",
+        marginBottom: "50px",
+      }}
+    >
+      Ce spun clientele
+    </h2>
+
+    <div className="testimonial-grid">
+      <div className="testimonial-card">
+        <p>
+          “Servicii impecabile, atenție la detalii și un rezultat absolut superb.”
+        </p>
+        <strong>Clientă fericită</strong>
+      </div>
+
+      <div className="testimonial-card">
+        <p>
+          “Un studio elegant, atmosferă plăcută și manichiuri care rezistă perfect.”
+        </p>
+        <strong>Clientă fericită</strong>
+      </div>
+
+      <div className="testimonial-card">
+        <p>
+          “Raluca lucrează cu foarte multă grijă și pasiune. Recomand cu drag.”
+        </p>
+        <strong>Clientă fericită</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section className="section">
+  <div className="container">
+    <h2
+      className="hero-title"
+      style={{
+        fontSize: "60px",
+        textAlign: "center",
+        marginBottom: "50px",
+      }}
+    >
+      Întrebări frecvente
+    </h2>
+
+    <div className="faq-grid">
+      <div className="faq-card">
+        <strong>Cum fac programare?</strong>
+        <p>Direct prin WhatsApp, rapid și simplu.</p>
+      </div>
+
+      <div className="faq-card">
+        <strong>Faceți nail art?</strong>
+        <p>Da, în funcție de modelul dorit.</p>
+      </div>
+
+      <div className="faq-card">
+        <strong>Unde este studioul?</strong>
+        <p>Studio boutique în Ploiești.</p>
+      </div>
+
+      <div className="faq-card">
+        <strong>Pot veni cu model ales?</strong>
+        <p>Da, poți trimite inspirația înainte de programare.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
       <main>
         <section className="hero">
