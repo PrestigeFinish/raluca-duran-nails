@@ -19,7 +19,7 @@ export default function Home() {
         <div className="container nav-inner">
           <img src="/logo.png" alt="Raluca Duran Nails" style={{ height: "80px" }} />
 
-          <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <div className="nav-links">
             <a href="#services">Servicii</a>
             <a href="#about">Despre</a>
             <a href="#gallery">Galerie</a>
