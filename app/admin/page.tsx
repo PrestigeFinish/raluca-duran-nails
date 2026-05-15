@@ -63,54 +63,56 @@ export default function AdminPage() {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
   async function loadData() {
-    const { data: appointmentData } = await supabase
-      .from("appointments")
-      .select(`
-        *,
-        services (
-          name,
-          category,
-          price,
-          duration_minutes,
-          buffer_minutes
-        )
-      `)
-      .order("appointment_date", { ascending: false })
-      .order("appointment_time", { ascending: true });
+  const { data: serviceData } = await supabase
+    .from("services")
+    .select("*")
+    .order("category")
+    .order("name");
 
-    const { data: clientData } = await supabase
-      .from("clients")
-      .select("*")
-      .order("updated_at", { ascending: false });
+  const { data: appointmentData, error: appointmentError } = await supabase
+    .from("appointments")
+    .select("*")
+    .order("appointment_date", { ascending: false })
+    .order("appointment_time", { ascending: true });
 
-    const { data: serviceData } = await supabase
-      .from("services")
-      .select("*")
-      .order("category")
-      .order("name");
-
-    const { data: blockedData } = await supabase
-      .from("blocked_days")
-      .select("*")
-      .order("blocked_date", { ascending: true });
-
-    const { data: photosData } = await supabase
-      .from("gallery_photos")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    const { data: notificationsData } = await supabase
-      .from("admin_notifications")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    setAppointments(appointmentData || []);
-    setClients(clientData || []);
-    setServices(serviceData || []);
-    setBlockedDays(blockedData || []);
-    setPhotos(photosData || []);
-    setNotifications(notificationsData || []);
+  if (appointmentError) {
+    console.error("Appointments error:", appointmentError);
   }
+
+  const servicesMap = new Map((serviceData || []).map((s) => [s.id, s]));
+
+  const appointmentsWithServices = (appointmentData || []).map((a) => ({
+    ...a,
+    services: servicesMap.get(a.service_id) || null,
+  }));
+
+  const { data: clientData } = await supabase
+    .from("clients")
+    .select("*")
+    .order("updated_at", { ascending: false });
+
+  const { data: blockedData } = await supabase
+    .from("blocked_days")
+    .select("*")
+    .order("blocked_date", { ascending: true });
+
+  const { data: photosData } = await supabase
+    .from("gallery_photos")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  const { data: notificationsData } = await supabase
+    .from("admin_notifications")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  setAppointments(appointmentsWithServices);
+  setClients(clientData || []);
+  setServices(serviceData || []);
+  setBlockedDays(blockedData || []);
+  setPhotos(photosData || []);
+  setNotifications(notificationsData || []);
+}
 
   useEffect(() => {
     loadData();
