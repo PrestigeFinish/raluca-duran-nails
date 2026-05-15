@@ -1,4 +1,5 @@
 import Script from "next/script";
+import NotificationButton from "../components/NotificationButton";
 import "./globals.css";
 
 export const metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="ro">
       <body>
         {children}
+        <NotificationButton />
 
         <Script
           src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
@@ -27,7 +29,7 @@ export default function RootLayout({
             window.OneSignalDeferred = window.OneSignalDeferred || [];
             window.OneSignalDeferred.push(async function(OneSignal) {
               await OneSignal.init({
-                appId: "82336a62-54d3-4c3b-951f-f619653fbf94",
+                appId: "82336a62-54d3-4c3b-951f-f619653fbf94"
               });
 
               window.requestRalucaNotifications = async function() {
@@ -36,12 +38,6 @@ export default function RootLayout({
             });
           `}
         </Script>
-
-        <button
-          id="onesignal-button"
-          onClick={() => {}}
-          style={{ display: "none" }}
-        />
       </body>
     </html>
   );
