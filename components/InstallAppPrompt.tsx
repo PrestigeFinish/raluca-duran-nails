@@ -43,31 +43,26 @@ export default function InstallAppPrompt() {
   }, []);
 
   async function handleInstall() {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const result = await deferredPrompt.userChoice;
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
 
-      if (result.outcome === "accepted") {
-        localStorage.setItem("raluca_install_dismissed", "yes");
-        setShow(false);
-      }
-
-      setDeferredPrompt(null);
-      return;
+    if (result.outcome === "accepted") {
+      localStorage.setItem("raluca_install_dismissed", "yes");
+      setShow(false);
     }
 
-    if (isIOS && navigator.share) {
-      try {
-        await navigator.share({
-          title: "Raluca Duran Beauty",
-          text: "Adaugă Raluca Duran Beauty pe ecranul principal pentru programări rapide, oferte și notificări.",
-          url: window.location.href,
-        });
+    setDeferredPrompt(null);
+    return;
+  }
 
-        setShowIOSGuide(true);
-      } catch {
-        setShowIOSGuide(true);
-      }
+  if (isIOS) {
+    setShowIOSGuide(true);
+    return;
+  }
+
+  setShowIOSGuide(true);
+}
 
       return;
     }
