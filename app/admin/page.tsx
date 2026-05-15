@@ -175,6 +175,17 @@ export default function AdminPage() {
       <section className="section" style={{ paddingTop: "150px" }}>
         <div className="container">
           <h1 className="hero-title section-title">Agenda Raluca Duran</h1>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "20px" }}>
+  <button
+    className="btn-secondary"
+    onClick={async () => {
+      await fetch("/api/admin-logout", { method: "POST" });
+      window.location.href = "/admin/login";
+    }}
+  >
+    Logout
+  </button>
+</div>
 
           {message && <p className="booking-message">{message}</p>}
 
