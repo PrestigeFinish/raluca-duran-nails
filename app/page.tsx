@@ -1,3 +1,4 @@
+import GallerySection from "@/components/GallerySection";
 export default function Home() {
   const nailServices = [
     { name: "Semi cu apex", price: "90 lei" },
