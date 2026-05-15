@@ -21,10 +21,7 @@ export async function POST(request: Request) {
     } = body;
 
     if (!service_id || !client_name || !client_phone || !appointment_date || !appointment_time) {
-      return NextResponse.json(
-        { error: "Date incomplete." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Date incomplete." }, { status: 400 });
     }
 
     const { data: existing } = await supabase
@@ -55,23 +52,36 @@ export async function POST(request: Request) {
           status: "pending",
         },
       ])
-      .select();
+      .select(`
+        *,
+        services (
+          name,
+          category,
+          price,
+          duration_minutes
+        )
+      `);
 
     if (error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    const appointment = data?.[0];
+
+    await supabase.from("admin_notifications").insert([
+      {
+        title: "Programare nouă",
+        message: `${client_name} a făcut o programare pentru ${appointment?.services?.name || "serviciu"} pe ${appointment_date} la ${appointment_time}.`,
+        type: "booking",
+        is_read: false,
+      },
+    ]);
 
     return NextResponse.json({
       success: true,
-      appointment: data?.[0],
+      appointment,
     });
   } catch {
-    return NextResponse.json(
-      { error: "A apărut o eroare." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "A apărut o eroare." }, { status: 500 });
   }
 }
