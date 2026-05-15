@@ -18,14 +18,9 @@ export default function MakeupPage() {
             <a href="/">Nails</a>
             <a href="#services">Servicii</a>
             <a href="#packages">Pachete</a>
-            <a
-              href="https://wa.me/40727707545"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-            >
-              Programare
-            </a>
+          <a href="/programare?category=makeup" className="btn-primary">
+  Programare
+</a>
           </div>
         </div>
       </nav>
@@ -49,14 +44,9 @@ export default function MakeupPage() {
               </p>
 
               <div className="hero-actions">
-                <a
-                  href="https://wa.me/40727707545"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary"
-                >
-                  Programează make-up
-                </a>
+               <a href="/programare?category=makeup" className="btn-primary">
+  Programare
+</a>
 
                 <a href="/" className="btn-secondary">
                   Înapoi la Nails
