@@ -1,4 +1,5 @@
-import GallerySection from "@/components/GallerySection";
+import GallerySection from "../../components/GallerySection";
+
 export default function MakeupPage() {
   const makeupServices = [
     { name: "Make-up de zi", price: "Preț la cerere" },
@@ -19,9 +20,9 @@ export default function MakeupPage() {
             <a href="/">Nails</a>
             <a href="#services">Servicii</a>
             <a href="#packages">Pachete</a>
-          <a href="/programare?category=makeup" className="btn-primary">
-  Programare
-</a>
+            <a href="/programare?category=makeup" className="btn-primary">
+              Programare
+            </a>
           </div>
         </div>
       </nav>
@@ -40,14 +41,13 @@ export default function MakeupPage() {
 
               <p className="hero-text">
                 Machiaj elegant, feminin și luminos pentru evenimente, ședințe
-                foto, ocazii speciale și momente în care vrei să te simți
-                impecabil.
+                foto, ocazii speciale și momente în care vrei să te simți impecabil.
               </p>
 
               <div className="hero-actions">
-               <a href="/programare?category=makeup" className="btn-primary">
-  Programare
-</a>
+                <a href="/programare?category=makeup" className="btn-primary">
+                  Programează make-up
+                </a>
 
                 <a href="/" className="btn-secondary">
                   Înapoi la Nails
@@ -89,34 +89,22 @@ export default function MakeupPage() {
             <div className="cards-grid">
               <div className="info-card">
                 <h3>Event Ready</h3>
-                <p>
-                  Make-up de eveniment + nails pentru un look complet și
-                  elegant.
-                </p>
+                <p>Make-up de eveniment + nails pentru un look complet și elegant.</p>
               </div>
 
               <div className="info-card">
                 <h3>Bridal Beauty</h3>
-                <p>
-                  Pachet dedicat mireselor: machiaj rafinat și manichiură
-                  premium pentru ziua cea mare.
-                </p>
+                <p>Pachet dedicat mireselor: machiaj rafinat și manichiură premium pentru ziua cea mare.</p>
               </div>
 
               <div className="info-card">
                 <h3>Photoshoot Look</h3>
-                <p>
-                  Machiaj potrivit pentru ședințe foto, content, evenimente sau
-                  apariții speciale.
-                </p>
+                <p>Machiaj potrivit pentru ședințe foto, content, evenimente sau apariții speciale.</p>
               </div>
 
               <div className="info-card">
                 <h3>Gift Voucher</h3>
-                <p>
-                  O experiență beauty oferită cadou pentru aniversări, surprize
-                  sau momente speciale.
-                </p>
+                <p>O experiență beauty oferită cadou pentru aniversări, surprize sau momente speciale.</p>
               </div>
             </div>
           </div>
@@ -125,8 +113,7 @@ export default function MakeupPage() {
         <section className="section section-soft">
           <div className="container">
             <h2 className="hero-title section-title">Galerie Make-up</h2>
-
-          <GallerySection category="makeup" />
+            <GallerySection category="makeup" />
           </div>
         </section>
 
@@ -136,26 +123,17 @@ export default function MakeupPage() {
 
             <div className="testimonial-grid">
               <div className="testimonial-card">
-                <p>
-                  “Machiaj elegant, rezistent și exact pe stilul pe care mi-l
-                  doream.”
-                </p>
+                <p>“Machiaj elegant, rezistent și exact pe stilul pe care mi-l doream.”</p>
                 <strong>Clientă fericită</strong>
               </div>
 
               <div className="testimonial-card">
-                <p>
-                  “Un look feminin, luminos și foarte bine realizat pentru
-                  eveniment.”
-                </p>
+                <p>“Un look feminin, luminos și foarte bine realizat pentru eveniment.”</p>
                 <strong>Clientă fericită</strong>
               </div>
 
               <div className="testimonial-card">
-                <p>
-                  “Recomand cu drag pentru răbdare, atenție și rezultat
-                  impecabil.”
-                </p>
+                <p>“Recomand cu drag pentru răbdare, atenție și rezultat impecabil.”</p>
                 <strong>Clientă fericită</strong>
               </div>
             </div>
@@ -169,23 +147,17 @@ export default function MakeupPage() {
             <div className="faq-grid">
               <div className="faq-card">
                 <strong>Cum fac o programare?</strong>
-                <p>Momentan, programările se fac rapid prin WhatsApp.</p>
+                <p>Programările se fac direct din formularul de programare.</p>
               </div>
 
               <div className="faq-card">
                 <strong>Faceți make-up pentru mireasă?</strong>
-                <p>
-                  Da, se poate discuta un pachet dedicat pentru ziua
-                  evenimentului.
-                </p>
+                <p>Da, se poate discuta un pachet dedicat pentru ziua evenimentului.</p>
               </div>
 
               <div className="faq-card">
                 <strong>Pot combina make-up cu nails?</strong>
-                <p>
-                  Da, există opțiunea de pachet nails + make-up pentru
-                  evenimente.
-                </p>
+                <p>Da, există opțiunea de pachet nails + make-up pentru evenimente.</p>
               </div>
 
               <div className="faq-card">
@@ -201,9 +173,7 @@ export default function MakeupPage() {
             <div className="footer-links">
               <a href="/">Nails</a>
               <a href="/makeup">Make-up</a>
-              <a href="https://wa.me/40727707545" target="_blank" rel="noopener noreferrer">
-                WhatsApp
-              </a>
+              <a href="/programare">Programare</a>
               <a href="#">Instagram coming soon</a>
             </div>
 
