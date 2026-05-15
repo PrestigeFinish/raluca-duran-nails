@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "RalucaDuranStudio",
-    short_name: "RalucaDuranStudio",
+    name: "Raluca Beauty",
+    short_name: "Raluca Beauty",
     description: "Programări nails și make-up by Raluca Duran",
     start_url: "/",
     scope: "/",
