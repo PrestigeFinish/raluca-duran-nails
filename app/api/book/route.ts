@@ -38,7 +38,7 @@ async function sendBookingEmail({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Raluca Beauty <onboarding@resend.dev>",
+      from: "Raluca Beauty <bookings@ralucabeauty.ro>",
       to: [adminEmail],
       subject: "Programare nouă - Raluca Beauty 💅",
       html: `
