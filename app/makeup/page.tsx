@@ -126,23 +126,7 @@ export default function MakeupPage() {
           <div className="container">
             <h2 className="hero-title section-title">Galerie Make-up</h2>
 
-            <div className="gallery-grid">
-              <img
-                className="gallery-item"
-                src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80"
-                alt="Make-up look"
-              />
-              <img
-                className="gallery-item"
-                src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80"
-                alt="Beauty make-up"
-              />
-              <img
-                className="gallery-item"
-                src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80"
-                alt="Make-up studio"
-              />
-            </div>
+          <GallerySection category="makeup" />
           </div>
         </section>
 
