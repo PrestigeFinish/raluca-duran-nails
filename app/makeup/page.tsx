@@ -1,27 +1,30 @@
 export default function MakeupPage() {
-  const services = [
+  const makeupServices = [
     { name: "Make-up de zi", price: "Preț la cerere" },
     { name: "Make-up de seară", price: "Preț la cerere" },
     { name: "Make-up eveniment", price: "Preț la cerere" },
     { name: "Make-up mireasă", price: "Preț la cerere" },
+    { name: "Machiaj ședință foto", price: "Preț la cerere" },
+    { name: "Pachet nails + make-up", price: "Preț la cerere" },
   ];
 
   return (
     <>
       <nav className="navbar">
         <div className="container nav-inner">
-          <img className="nav-logo" src="/logo-makeup.png" alt="Raluca Duran Beauty" />
+          <img className="nav-logo" src="/logo-makeup.png" alt="Raluca Duran Make-up" />
 
           <div className="nav-links">
             <a href="/">Nails</a>
             <a href="#services">Servicii</a>
+            <a href="#packages">Pachete</a>
             <a
-              href="https://wa.me/40727707545?text=Bună! Aș dori o programare pentru make-up la Raluca Duran ✨"
+              href="https://wa.me/40727707545"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"
             >
-              Programează-te
+              Programare
             </a>
           </div>
         </div>
@@ -29,11 +32,9 @@ export default function MakeupPage() {
 
       <main>
         <section className="hero">
-          <img className="bg-logo" src="/logo-makeup.png" alt="" />
-
           <div className="container">
             <div className="hero-content">
-              <p className="hero-subtitle">MAKE-UP • PLOIEȘTI</p>
+              <p className="hero-subtitle">Make-up • Ploiești</p>
 
               <h1 className="hero-title hero-title-main">
                 Make-up by
@@ -42,28 +43,41 @@ export default function MakeupPage() {
               </h1>
 
               <p className="hero-text">
-                Machiaj elegant și feminin pentru evenimente, ședințe foto,
-                ocazii speciale și momente în care vrei să te simți impecabil.
+                Machiaj elegant, feminin și luminos pentru evenimente, ședințe
+                foto, ocazii speciale și momente în care vrei să te simți
+                impecabil.
               </p>
 
-              <a
-                href="https://wa.me/40727707545?text=Bună! Aș dori o programare pentru make-up la Raluca Duran ✨"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary"
-              >
-                Rezervă make-up
-              </a>
+              <div className="hero-actions">
+                <a
+                  href="https://wa.me/40727707545"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  Programează make-up
+                </a>
+
+                <a href="/" className="btn-secondary">
+                  Înapoi la Nails
+                </a>
+              </div>
             </div>
+
+            <img className="bg-logo" src="/logo-makeup.png" alt="Raluca Duran Make-up" />
           </div>
         </section>
 
-        <section className="section" id="services">
+        <section className="section section-soft" id="services">
           <div className="container">
             <h2 className="hero-title section-title">Servicii Make-up</h2>
+            <p className="section-lead">
+              Machiaj adaptat stilului tău, evenimentului și trăsăturilor tale.
+              Prețurile pot varia în funcție de complexitate și durată.
+            </p>
 
             <div className="services-grid">
-              {services.map((service, index) => (
+              {makeupServices.map((service, index) => (
                 <div key={index} className="service-card">
                   <span>{service.name}</span>
                   <strong>{service.price}</strong>
@@ -73,20 +87,153 @@ export default function MakeupPage() {
           </div>
         </section>
 
-        <section className="section">
+        <section className="section" id="packages">
+          <div className="container">
+            <h2 className="hero-title section-title">Pachete Beauty</h2>
+            <p className="section-lead">
+              Pentru evenimente importante, poți combina serviciile de make-up
+              cu serviciile de nails într-o experiență completă.
+            </p>
+
+            <div className="cards-grid">
+              <div className="info-card">
+                <h3>Event Ready</h3>
+                <p>
+                  Make-up de eveniment + nails pentru un look complet și
+                  elegant.
+                </p>
+              </div>
+
+              <div className="info-card">
+                <h3>Bridal Beauty</h3>
+                <p>
+                  Pachet dedicat mireselor: machiaj rafinat și manichiură
+                  premium pentru ziua cea mare.
+                </p>
+              </div>
+
+              <div className="info-card">
+                <h3>Photoshoot Look</h3>
+                <p>
+                  Machiaj potrivit pentru ședințe foto, content, evenimente sau
+                  apariții speciale.
+                </p>
+              </div>
+
+              <div className="info-card">
+                <h3>Gift Voucher</h3>
+                <p>
+                  O experiență beauty oferită cadou pentru aniversări, surprize
+                  sau momente speciale.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section section-soft">
           <div className="container">
             <h2 className="hero-title section-title">Galerie Make-up</h2>
 
             <div className="gallery-grid">
-              <img className="gallery-item" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80" alt="Make-up look" />
-              <img className="gallery-item" src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80" alt="Beauty makeup" />
-              <img className="gallery-item" src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80" alt="Makeup studio" />
+              <img
+                className="gallery-item"
+                src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80"
+                alt="Make-up look"
+              />
+              <img
+                className="gallery-item"
+                src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80"
+                alt="Beauty make-up"
+              />
+              <img
+                className="gallery-item"
+                src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80"
+                alt="Make-up studio"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <h2 className="hero-title section-title">Ce spun clientele</h2>
+
+            <div className="testimonial-grid">
+              <div className="testimonial-card">
+                <p>
+                  “Machiaj elegant, rezistent și exact pe stilul pe care mi-l
+                  doream.”
+                </p>
+                <strong>Clientă fericită</strong>
+              </div>
+
+              <div className="testimonial-card">
+                <p>
+                  “Un look feminin, luminos și foarte bine realizat pentru
+                  eveniment.”
+                </p>
+                <strong>Clientă fericită</strong>
+              </div>
+
+              <div className="testimonial-card">
+                <p>
+                  “Recomand cu drag pentru răbdare, atenție și rezultat
+                  impecabil.”
+                </p>
+                <strong>Clientă fericită</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section section-soft">
+          <div className="container">
+            <h2 className="hero-title section-title">Întrebări frecvente</h2>
+
+            <div className="faq-grid">
+              <div className="faq-card">
+                <strong>Cum fac o programare?</strong>
+                <p>Momentan, programările se fac rapid prin WhatsApp.</p>
+              </div>
+
+              <div className="faq-card">
+                <strong>Faceți make-up pentru mireasă?</strong>
+                <p>
+                  Da, se poate discuta un pachet dedicat pentru ziua
+                  evenimentului.
+                </p>
+              </div>
+
+              <div className="faq-card">
+                <strong>Pot combina make-up cu nails?</strong>
+                <p>
+                  Da, există opțiunea de pachet nails + make-up pentru
+                  evenimente.
+                </p>
+              </div>
+
+              <div className="faq-card">
+                <strong>Unde se realizează serviciile?</strong>
+                <p>În Ploiești. Detaliile exacte se oferă la programare.</p>
+              </div>
             </div>
           </div>
         </section>
 
         <footer className="footer">
-          © 2026 Raluca Duran Beauty • Ploiești
+          <div className="container">
+            <div className="footer-links">
+              <a href="/">Nails</a>
+              <a href="/makeup">Make-up</a>
+              <a href="https://wa.me/40727707545" target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+              <a href="#">Instagram coming soon</a>
+            </div>
+
+            <p>© 2026 Raluca Duran Beauty • Ploiești</p>
+          </div>
         </footer>
       </main>
     </>
