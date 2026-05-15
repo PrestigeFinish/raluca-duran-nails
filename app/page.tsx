@@ -1,4 +1,5 @@
-import GallerySection from "@/components/GallerySection";
+import GallerySection from "../components/GallerySection";
+
 export default function Home() {
   const nailServices = [
     { name: "Semi cu apex", price: "90 lei" },
@@ -24,9 +25,9 @@ export default function Home() {
             <a href="#services">Servicii</a>
             <a href="#beauty">Beauty</a>
             <a href="/makeup">Make-up</a>
-        <a href="/programare?category=nails" className="btn-primary">
-  Programare
-</a>
+            <a href="/programare?category=nails" className="btn-primary">
+              Programare
+            </a>
           </div>
         </div>
       </nav>
@@ -49,9 +50,9 @@ export default function Home() {
               </p>
 
               <div className="hero-actions">
-             <a href="/programare?category=nails" className="btn-primary">
-  Programează-te
-</a>
+                <a href="/programare?category=nails" className="btn-primary">
+                  Programează-te
+                </a>
 
                 <a href="/makeup" className="btn-secondary">
                   Vezi Make-up
@@ -133,8 +134,7 @@ export default function Home() {
         <section className="section section-soft">
           <div className="container">
             <h2 className="hero-title section-title">Galerie Nails</h2>
-
-          <GallerySection category="nails" />
+            <GallerySection category="nails" />
           </div>
         </section>
 
@@ -144,26 +144,17 @@ export default function Home() {
 
             <div className="testimonial-grid">
               <div className="testimonial-card">
-                <p>
-                  “Un rezultat elegant, curat și lucrat cu multă atenție la
-                  detalii.”
-                </p>
+                <p>“Un rezultat elegant, curat și lucrat cu multă atenție la detalii.”</p>
                 <strong>Clientă fericită</strong>
               </div>
 
               <div className="testimonial-card">
-                <p>
-                  “Atmosferă plăcută, răbdare și o manichiură care arată
-                  impecabil.”
-                </p>
+                <p>“Atmosferă plăcută, răbdare și o manichiură care arată impecabil.”</p>
                 <strong>Clientă fericită</strong>
               </div>
 
               <div className="testimonial-card">
-                <p>
-                  “Recomand cu drag pentru servicii feminine, fine și
-                  profesionale.”
-                </p>
+                <p>“Recomand cu drag pentru servicii feminine, fine și profesionale.”</p>
                 <strong>Clientă fericită</strong>
               </div>
             </div>
@@ -177,15 +168,12 @@ export default function Home() {
             <div className="faq-grid">
               <div className="faq-card">
                 <strong>Cum fac o programare?</strong>
-                <p>Momentan, programările se fac rapid prin WhatsApp.</p>
+                <p>Programările se fac direct din formularul de programare.</p>
               </div>
 
               <div className="faq-card">
                 <strong>Pot trimite un model înainte?</strong>
-                <p>
-                  Da, poți trimite inspirația sau modelul dorit înainte de
-                  programare.
-                </p>
+                <p>Da, poți trimite inspirația sau modelul dorit înainte de programare.</p>
               </div>
 
               <div className="faq-card">
@@ -195,10 +183,7 @@ export default function Home() {
 
               <div className="faq-card">
                 <strong>Faceți și make-up?</strong>
-                <p>
-                  Da, există o pagină separată pentru serviciile de make-up by
-                  Raluca Duran.
-                </p>
+                <p>Da, există o pagină separată pentru serviciile de make-up by Raluca Duran.</p>
               </div>
             </div>
           </div>
@@ -209,9 +194,7 @@ export default function Home() {
             <div className="footer-links">
               <a href="/">Nails</a>
               <a href="/makeup">Make-up</a>
-              <a href="https://wa.me/40727707545" target="_blank" rel="noopener noreferrer">
-                WhatsApp
-              </a>
+              <a href="/programare">Programare</a>
               <a href="#">Instagram coming soon</a>
             </div>
 
