@@ -23,14 +23,9 @@ export default function Home() {
             <a href="#services">Servicii</a>
             <a href="#beauty">Beauty</a>
             <a href="/makeup">Make-up</a>
-            <a
-              href="https://wa.me/40727707545"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-            >
-              Programare
-            </a>
+        <a href="/programare?category=nails" className="btn-primary">
+  Programare
+</a>
           </div>
         </div>
       </nav>
@@ -53,14 +48,9 @@ export default function Home() {
               </p>
 
               <div className="hero-actions">
-                <a
-                  href="https://wa.me/40727707545"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary"
-                >
-                  Programează-te
-                </a>
+             <a href="/programare?category=nails" className="btn-primary">
+  Programează-te
+</a>
 
                 <a href="/makeup" className="btn-secondary">
                   Vezi Make-up
