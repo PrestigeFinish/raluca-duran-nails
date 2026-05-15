@@ -1,43 +1,58 @@
-import { NextResponse } from "next/server";
+"use client";
 
-export async function POST(request: Request) {
-  try {
-    const { password } = await request.json();
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-    const adminPassword = process.env.ADMIN_PASSWORD;
+export default function AdminLoginPage() {
+  const router = useRouter();
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    if (!adminPassword) {
-      return NextResponse.json(
-        { error: "ADMIN_PASSWORD nu este setată în Netlify." },
-        { status: 500 }
-      );
-    }
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const cleanPassword = String(password || "").trim();
-    const cleanAdminPassword = String(adminPassword || "").trim();
-
-    if (!cleanPassword || cleanPassword !== cleanAdminPassword) {
-      return NextResponse.json(
-        { error: "Parolă greșită." },
-        { status: 401 }
-      );
-    }
-
-    const response = NextResponse.json({ success: true });
-
-    response.cookies.set("admin_auth", "true", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
+    const res = await fetch("/api/admin-login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password }),
     });
 
-    return response;
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Eroare la autentificare." },
-      { status: 500 }
-    );
+    const data = await res.json();
+
+    setLoading(false);
+
+    if (!res.ok) {
+      setError(data.error || "Parolă greșită.");
+      return;
+    }
+
+    router.push("/admin");
   }
+
+  return (
+    <main className="admin-login-page">
+      <form onSubmit={handleLogin} className="admin-login-box">
+        <h1>ADMIN LOGIN</h1>
+
+        <label>Parolă admin</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Introdu parola"
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Se verifică..." : "Intră în admin"}
+        </button>
+
+        {error && <p className="admin-error">{error}</p>}
+      </form>
+    </main>
+  );
 }
