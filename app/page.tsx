@@ -129,9 +129,23 @@ export default function Home() {
             </h2>
 
             <div className="gallery-grid">
-              <div className="gallery-item"></div>
-              <div className="gallery-item"></div>
-              <div className="gallery-item"></div>
+             <img
+  className="gallery-item"
+  src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80"
+  alt="Nail design"
+/>
+
+<img
+  className="gallery-item"
+  src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80"
+  alt="Luxury nails"
+/>
+
+<img
+  className="gallery-item"
+  src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80"
+  alt="Elegant manicure"
+/>
             </div>
           </div>
         </section>
