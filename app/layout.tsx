@@ -1,3 +1,5 @@
+import InstallAppPrompt from "../components/InstallAppPrompt";
+import BottomNav from "../components/BottomNav";
 import Script from "next/script";
 import NotificationButton from "../components/NotificationButton";
 import "./globals.css";
