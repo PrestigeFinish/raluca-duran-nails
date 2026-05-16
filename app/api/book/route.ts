@@ -292,9 +292,23 @@ export async function POST(request: Request) {
             <p><strong>Durată estimată:</strong> ${duration} minute</p>
             <p><strong>Preț:</strong> ${service.price || "-"}</p>
 
-            <p>Dacă ai nevoie să modifici programarea, ne poți contacta telefonic.</p>
+      <p>Gestionează programarea ta:</p>
 
-            <p>Te așteptăm cu drag,<br/>Raluca Beauty</p>
+<p>
+  <a href="${SITE_URL}/gestioneaza-programarea?token=${cancelToken}"
+     style="display:inline-block;padding:12px 20px;background:#b8826b;color:white;text-decoration:none;border-radius:8px;">
+    Anulează programarea
+  </a>
+</p>
+
+<p>
+  <a href="${SITE_URL}/gestioneaza-programarea?token=${rescheduleToken}"
+     style="display:inline-block;padding:12px 20px;background:#222;color:white;text-decoration:none;border-radius:8px;">
+    Reprogramează
+  </a>
+</p>
+
+<p>Te așteptăm cu drag.<br/>Raluca Beauty</p>
           </div>
         `,
       });
