@@ -465,6 +465,8 @@ async function saveAppointmentEdit() {
     return appointments.filter((a) => {
       const matchesDate = filterDate ? a.appointment_date === filterDate : true;
       const matchesStatus = filterStatus === "all" ? true : a.status === filterStatus;
+      const matchesService =
+  filterService === "all" ? true : a.service_id === filterService;
       const search = searchTerm.toLowerCase().trim();
 
       const matchesSearch = search
@@ -473,7 +475,7 @@ async function saveAppointmentEdit() {
             .includes(search)
         : true;
 
-      return matchesDate && matchesStatus && matchesSearch;
+      return matchesDate && matchesStatus && matchesSearch && matchesService;
     });
   }, [appointments, filterDate, filterStatus, searchTerm]);
 
@@ -687,6 +689,11 @@ async function saveAppointmentEdit() {
           {tab === "programari" && (
             <>
               <h2 className="hero-title admin-section-title">Programări</h2>
+              <div className="admin-actions" style={{ marginBottom: 16 }}>
+  <button onClick={() => exportCsv("appointments")}>Export Programări CSV</button>
+  <button onClick={() => exportCsv("clients")}>Export Cliente CSV</button>
+  <button onClick={() => exportCsv("revenue")}>Export Venit CSV</button>
+</div>
 
               <div className="admin-grid" style={{ marginBottom: 22 }}>
                 <label>
@@ -715,6 +722,21 @@ async function saveAppointmentEdit() {
                     <option value="no_show">No-show</option>
                   </select>
                 </label>
+                <label>
+  Serviciu
+  <select
+    className="admin-input"
+    value={filterService}
+    onChange={(e) => setFilterService(e.target.value)}
+  >
+    <option value="all">Toate serviciile</option>
+    {services.map((service) => (
+      <option key={service.id} value={service.id}>
+        {service.name}
+      </option>
+    ))}
+  </select>
+</label>
               </div>
 
               {Object.entries(groupedAppointments).map(([date, items]: any) => (
