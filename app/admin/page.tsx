@@ -969,6 +969,123 @@ async function saveAppointmentEdit() {
           )}
         </div>
       </section>
+      {editAppointment && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,0.6)",
+      zIndex: 9999,
+      padding: 40,
+      overflow: "auto",
+    }}
+  >
+    <div
+      style={{
+        maxWidth: 700,
+        margin: "0 auto",
+        background: "white",
+        padding: 24,
+        borderRadius: 16,
+      }}
+    >
+      <h2>Edit programare</h2>
+
+      <label>
+        Data
+        <input
+          className="admin-input"
+          type="date"
+          value={editAppointment.appointment_date}
+          onChange={(e) =>
+            setEditAppointment({
+              ...editAppointment,
+              appointment_date: e.target.value,
+            })
+          }
+        />
+      </label>
+
+      <label>
+        Ora
+        <input
+          className="admin-input"
+          value={editAppointment.appointment_time}
+          onChange={(e) =>
+            setEditAppointment({
+              ...editAppointment,
+              appointment_time: e.target.value,
+            })
+          }
+        />
+      </label>
+
+      <label>
+        Serviciu
+        <select
+          className="admin-input"
+          value={editAppointment.service_id}
+          onChange={(e) =>
+            setEditAppointment({
+              ...editAppointment,
+              service_id: e.target.value,
+            })
+          }
+        >
+          {services.map((service) => (
+            <option key={service.id} value={service.id}>
+              {service.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label>
+        Status
+        <select
+          className="admin-input"
+          value={editAppointment.status}
+          onChange={(e) =>
+            setEditAppointment({
+              ...editAppointment,
+              status: e.target.value,
+            })
+          }
+        >
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+          <option value="no_show">No show</option>
+        </select>
+      </label>
+
+      <label>
+        Note
+        <textarea
+          className="admin-input"
+          value={editAppointment.notes || ""}
+          onChange={(e) =>
+            setEditAppointment({
+              ...editAppointment,
+              notes: e.target.value,
+            })
+          }
+        />
+      </label>
+
+      <div className="admin-actions">
+        <button onClick={saveAppointmentEdit}>
+          Salvează modificările
+        </button>
+
+        <button onClick={() => setEditAppointment(null)}>
+          Închide
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </main>
   );
 }
