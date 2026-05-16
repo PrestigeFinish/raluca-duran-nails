@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
@@ -9,48 +9,58 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-const hours = [
-  "09:00",
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-  "18:00",
-];
+function toMinutes(time: string) {
+  const [h, m] = time.slice(0, 5).split(":").map(Number);
+  return h * 60 + m;
+}
+
+function toTime(minutes: number) {
+  const h = Math.floor(minutes / 60)
+    .toString()
+    .padStart(2, "0");
+
+  const m = (minutes % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${h}:${m}`;
+}
+
+function getSlots(category: string) {
+  if (category === "nails") {
+    return ["09:00", "12:00", "15:00", "18:00"];
+  }
+
+  if (category === "makeup") {
+    return ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00"];
+  }
+
+  return [];
+}
 
 function ProgramareContent() {
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get("category");
 
   const [services, setServices] = useState<any[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
+
   const [serviceId, setServiceId] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [bookedHours, setBookedHours] = useState<string[]>([]);
+
   const [clientName, setClientName] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [notes, setNotes] = useState("");
   const [message, setMessage] = useState("");
 
-  const title =
-    selectedCategory === "makeup"
-      ? "Programare Make-up"
-      : selectedCategory === "nails"
-      ? "Programare Nails"
-      : "Programare";
+  const selectedService = services.find((s) => s.id === serviceId);
 
   useEffect(() => {
     async function loadInitialData() {
-      let query = supabase
-        .from("services")
-        .select("*")
-        .eq("is_active", true);
+      let query = supabase.from("services").select("*").eq("is_active", true);
 
       if (selectedCategory === "nails" || selectedCategory === "makeup") {
         query = query.eq("category", selectedCategory);
@@ -70,37 +80,80 @@ function ProgramareContent() {
   }, [selectedCategory]);
 
   useEffect(() => {
-    async function loadBookedHours() {
+    async function loadAppointments() {
       if (!date) return;
-
-      if (blockedDates.includes(date)) {
-        setBookedHours([]);
-        setTime("");
-        setMessage("Zi indisponibilă pentru programări.");
-        return;
-      }
-
-      setMessage("");
 
       const { data } = await supabase
         .from("appointments")
-        .select("appointment_time")
+        .select(`
+          *,
+          services (
+            duration_minutes,
+            buffer_minutes,
+            category
+          )
+        `)
         .eq("appointment_date", date)
         .neq("status", "cancelled");
 
-      setBookedHours(
-        (data || []).map((item: any) => item.appointment_time.slice(0, 5))
-      );
+      setAppointments(data || []);
     }
 
-    loadBookedHours();
-  }, [date, blockedDates]);
+    loadAppointments();
+  }, [date]);
+
+  const availableSlots = useMemo(() => {
+    if (!selectedService) return [];
+    return getSlots(selectedService.category);
+  }, [selectedService]);
+
+  function isSlotUnavailable(slot: string) {
+    if (!selectedService || !date) return true;
+
+    if (blockedDates.includes(date)) {
+      return true;
+    }
+
+    const start = toMinutes(slot);
+    const duration = Number(selectedService.duration_minutes || 60);
+    const buffer = Number(selectedService.buffer_minutes || 0);
+    const end = start + duration + buffer;
+
+    return appointments.some((appointment: any) => {
+      const existingStart = toMinutes(appointment.appointment_time);
+
+      const existingDuration = Number(
+        appointment.services?.duration_minutes || 60
+      );
+
+      const existingBuffer = Number(
+        appointment.services?.buffer_minutes || 0
+      );
+
+      const existingEnd = appointment.end_time
+        ? toMinutes(appointment.end_time)
+        : existingStart + existingDuration + existingBuffer;
+
+      return start < existingEnd && end > existingStart;
+    });
+  }
 
   async function submitBooking(e: React.FormEvent) {
     e.preventDefault();
+    setMessage("");
+
+    if (!serviceId || !date || !time) {
+      setMessage("Alege serviciul, data și ora.");
+      return;
+    }
 
     if (blockedDates.includes(date)) {
-      setMessage("Ziua selectată este indisponibilă.");
+      setMessage("Zi indisponibilă.");
+      return;
+    }
+
+    if (isSlotUnavailable(time)) {
+      setMessage("Intervalul este deja ocupat.");
       return;
     }
 
@@ -127,7 +180,8 @@ function ProgramareContent() {
       return;
     }
 
-    setMessage("Programarea a fost trimisă cu succes.");
+    setMessage("Programarea a fost trimisă cu succes 💖");
+
     setServiceId("");
     setDate("");
     setTime("");
@@ -141,10 +195,12 @@ function ProgramareContent() {
     <main>
       <section className="section" style={{ paddingTop: "160px" }}>
         <div className="container">
-          <h1 className="hero-title section-title">{title}</h1>
+          <h1 className="hero-title section-title">
+            Programare Raluca Beauty
+          </h1>
 
           <p className="section-lead">
-            Alege serviciul, data și ora dorită.
+            Nails: 3h / Make-up: 2h
           </p>
 
           <div
@@ -158,10 +214,6 @@ function ProgramareContent() {
             <a href="/programare?category=makeup" className="btn-secondary">
               Make-up
             </a>
-
-            <a href="/programare" className="btn-secondary">
-              Toate
-            </a>
           </div>
 
           <form onSubmit={submitBooking} className="booking-form">
@@ -169,7 +221,10 @@ function ProgramareContent() {
               Serviciu
               <select
                 value={serviceId}
-                onChange={(e) => setServiceId(e.target.value)}
+                onChange={(e) => {
+                  setServiceId(e.target.value);
+                  setTime("");
+                }}
                 required
               >
                 <option value="">Alege serviciul</option>
@@ -199,22 +254,24 @@ function ProgramareContent() {
             <label>
               Ora
               <div className="hours-grid">
-                {hours.map((hour) => {
-                  const disabled =
-                    bookedHours.includes(hour) || blockedDates.includes(date);
+                {!selectedService && <p>Alege întâi serviciul.</p>}
 
-                  return (
-                    <button
-                      key={hour}
-                      type="button"
-                      disabled={disabled}
-                      onClick={() => setTime(hour)}
-                      className={time === hour ? "hour-btn active" : "hour-btn"}
-                    >
-                      {disabled ? "Indisponibil" : hour}
-                    </button>
-                  );
-                })}
+                {selectedService &&
+                  availableSlots.map((slot) => {
+                    const disabled = isSlotUnavailable(slot);
+
+                    return (
+                      <button
+                        key={slot}
+                        type="button"
+                        disabled={disabled}
+                        onClick={() => setTime(slot)}
+                        className={time === slot ? "hour-btn active" : "hour-btn"}
+                      >
+                        {disabled ? `${slot} ocupat` : slot}
+                      </button>
+                    );
+                  })}
               </div>
             </label>
 
@@ -239,6 +296,7 @@ function ProgramareContent() {
             <label>
               Email
               <input
+                type="email"
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
               />
