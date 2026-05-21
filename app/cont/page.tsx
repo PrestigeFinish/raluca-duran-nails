@@ -138,29 +138,76 @@ export default function ClientAccountPage() {
             Contul tău Raluca Beauty — programări, puncte, beneficii și istoric.
           </p>
 
-          <div className="admin-stats">
-            <div className="admin-stat-card">
-              <strong>{points}</strong>
-              <span>Puncte loyalty</span>
-            </div>
+        <div className="admin-stats">
+  <div className="admin-stat-card">
+    <strong>{points}</strong>
+    <span>Puncte loyalty</span>
+  </div>
 
-            <div className="admin-stat-card">
-              <strong>{percent}%</strong>
-              <span>Reward disponibil</span>
-            </div>
+  <div className="admin-stat-card">
+    <strong>{percent}%</strong>
+    <span>Reducere activă</span>
+  </div>
 
-            <div className="admin-stat-card">
-              <strong>{pointsToNext}</strong>
-              <span>Puncte până la următorul reward</span>
-            </div>
-          </div>
+  <div className="admin-stat-card">
+    <strong>{pointsToNext}</strong>
+    <span>Puncte până la reward</span>
+  </div>
+</div>
+
+<div
+  style={{
+    marginTop: 20,
+    background: "#f5ece7",
+    borderRadius: 20,
+    padding: 18,
+  }}
+>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      marginBottom: 10,
+      fontWeight: 600,
+    }}
+  >
+    <span>Progress loyalty</span>
+    <span>{points % 5}/5</span>
+  </div>
+
+  <div
+    style={{
+      width: "100%",
+      height: 14,
+      background: "#e7d8d0",
+      borderRadius: 999,
+      overflow: "hidden",
+    }}
+  >
+    <div
+      style={{
+        width: `${((points % 5) / 5) * 100}%`,
+        height: "100%",
+        background: "#b8846b",
+        borderRadius: 999,
+        transition: "0.4s ease",
+      }}
+    />
+  </div>
+
+  <p style={{ marginTop: 12 }}>
+    La fiecare 5 puncte primești +5% reducere 🎁
+  </p>
+</div>
 
           <div style={{ marginTop: 18 }}>
             <p>
               Codul tău referral:
               <strong> {client?.referral_code || "se generează curând"}</strong>
             </p>
-            <p>Invită o prietenă și primești +1 punct.</p>
+            <p>
+  Invită o prietenă folosind codul tău și primești +1 punct când își creează cont.
+</p>
           </div>
 
           <button className="btn-secondary" onClick={logout}>
@@ -171,6 +218,22 @@ export default function ClientAccountPage() {
         {message && <p className="booking-message">{message}</p>}
 
         <h2 className="hero-title admin-section-title">Programările mele</h2>
+        <div
+  style={{
+    display: "flex",
+    gap: 12,
+    flexWrap: "wrap",
+    marginBottom: 20,
+  }}
+>
+  <a className="btn-primary" href="/programare?category=nails">
+    Programare unghii
+  </a>
+
+  <a className="btn-primary" href="/programare?category=makeup">
+    Programare make-up
+  </a>
+</div>
 
         <div className="admin-grid">
           {futureAppointments.map((appointment) => (
@@ -178,6 +241,9 @@ export default function ClientAccountPage() {
               <strong>{appointment.service?.name || "Serviciu"}</strong>
               <p>{appointment.appointment_date} • {appointment.appointment_time?.slice(0, 5)}</p>
               <p>Status: {statusLabels[appointment.status] || appointment.status}</p>
+              <p>
+  Categorie: {appointment.service?.category === "makeup" ? "Make-up" : "Nails"}
+</p>
               <p>Preț: {appointment.total_price || appointment.service?.price || "-"}</p>
 
               <div className="admin-actions">
