@@ -421,9 +421,6 @@ export default function AdminPage() {
     setMessage("Poză ștearsă.");
     loadData();
   }
-async function exportCsv(type: string) {
-  window.open(`/api/admin/export?type=${type}`, "_blank");
-}
 
 async function saveAppointmentEdit() {
   if (!editAppointment) return;
@@ -689,11 +686,7 @@ async function saveAppointmentEdit() {
           {tab === "programari" && (
             <>
               <h2 className="hero-title admin-section-title">Programări</h2>
-              <div className="admin-actions" style={{ marginBottom: 16 }}>
-  <button onClick={() => exportCsv("appointments")}>Export Programări CSV</button>
-  <button onClick={() => exportCsv("clients")}>Export Cliente CSV</button>
-  <button onClick={() => exportCsv("revenue")}>Export Venit CSV</button>
-</div>
+              
 
               <div className="admin-grid" style={{ marginBottom: 22 }}>
                 <label>
