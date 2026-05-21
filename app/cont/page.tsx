@@ -25,10 +25,22 @@ export default function ClientAccountPage() {
   const [client, setClient] = useState<any>(null);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<any[]>([]);
   const [message, setMessage] = useState("");
 
   async function loadAccount() {
     setLoading(true);
+    const { data: notificationsData } = await supabase
+  .from("client_notifications")
+  .select("*")
+  .eq("client_id", clientData.id)
+  .order("created_at", { ascending: false });
+
+const { data: favoritesData } = await supabase
+  .from("client_favorites")
+  .select("*")
+  .eq("client_id", clientData.id);
 
     const { data: userData } = await supabase.auth.getUser();
     const user = userData.user;
@@ -75,6 +87,8 @@ export default function ClientAccountPage() {
       }))
     );
     setServices(servicesData || []);
+    setNotifications(notificationsData || []);
+setFavorites(favoritesData || []);
     setLoading(false);
   }
 
@@ -94,6 +108,30 @@ export default function ClientAccountPage() {
   const pastAppointments = appointments.filter(
     (a) => new Date(a.appointment_date) < new Date(new Date().toISOString().slice(0, 10)) || a.status === "completed"
   );
+  function isFavorite(serviceId: string) {
+  return favorites.some((favorite) => favorite.service_id === serviceId);
+}
+
+async function toggleFavorite(serviceId: string) {
+  if (!client) return;
+
+  const existing = favorites.find((favorite) => favorite.service_id === serviceId);
+
+  if (existing) {
+    await supabase.from("client_favorites").delete().eq("id", existing.id);
+    setMessage("Serviciu scos de la favorite.");
+  } else {
+    await supabase.from("client_favorites").insert([
+      {
+        client_id: client.id,
+        service_id: serviceId,
+      },
+    ]);
+    setMessage("Serviciu adăugat la favorite.");
+  }
+
+  loadAccount();
+}
 
   async function logout() {
     await supabase.auth.signOut();
@@ -216,6 +254,23 @@ export default function ClientAccountPage() {
         </div>
 
         {message && <p className="booking-message">{message}</p>}
+        {notifications.length > 0 && (
+  <>
+    <h2 className="hero-title admin-section-title">Notificările mele</h2>
+
+    <div className="blocked-list">
+      {notifications.slice(0, 5).map((notification) => (
+        <div key={notification.id} className="blocked-card">
+          <div>
+            <strong>{notification.title}</strong>
+            <p>{notification.message}</p>
+            <small>{notification.is_read ? "Citită" : "Nouă"}</small>
+          </div>
+        </div>
+      ))}
+    </div>
+  </>
+)}
 
         <h2 className="hero-title admin-section-title">Programările mele</h2>
         <div
@@ -266,6 +321,27 @@ export default function ClientAccountPage() {
             </div>
           ))}
         </div>
+        <h2 className="hero-title admin-section-title">Servicii favorite</h2>
+
+<div className="admin-grid">
+  {services.map((service) => (
+    <div key={service.id} className="admin-card">
+      <strong>{service.name}</strong>
+      <p>{service.category === "makeup" ? "Make-up" : "Nails"}</p>
+      <p>{service.price}</p>
+
+      <div className="admin-actions">
+        <button onClick={() => toggleFavorite(service.id)}>
+          {isFavorite(service.id) ? "Șterge de la favorite" : "Adaugă la favorite"}
+        </button>
+
+        <a href={`/programare?category=${service.category}`}>
+          Programează
+        </a>
+      </div>
+    </div>
+  ))}
+</div>
 
         <h2 className="hero-title admin-section-title">Istoric</h2>
 
