@@ -294,6 +294,36 @@ export default function AdminPage() {
     if (status === "cancelled") extra.cancelled_at = new Date().toISOString();
 
     await supabase.from("appointments").update(extra).eq("id", id);
+    if (status === "completed") {
+  const appointment = appointments.find((a) => a.id === id);
+
+  if (appointment?.client_id) {
+    const client = clients.find((c) => c.id === appointment.client_id);
+
+    const newPoints = Number(client?.loyalty_points || 0) + 1;
+    const newRewardPercent = Math.floor(newPoints / 5) * 5;
+
+    await supabase
+      .from("clients")
+      .update({
+        loyalty_points: newPoints,
+        reward_percent: newRewardPercent,
+        last_visit_date: appointment.appointment_date,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", appointment.client_id);
+
+    await supabase.from("client_notifications").insert([
+      {
+        client_id: appointment.client_id,
+        title: "Ai primit un punct nou 🎁",
+        message: `Ai acumulat ${newPoints} puncte loyalty. Reducerea ta disponibilă este ${newRewardPercent}%.`,
+        type: "loyalty",
+        is_read: false,
+      },
+    ]);
+  }
+}
 
     const appointment = appointments.find((a) => a.id === id);
 
