@@ -146,6 +146,8 @@ export async function POST(request: Request) {
       appointment_date,
       appointment_time,
       notes,
+      use_reward,
+client_auth_id,
     } = body;
 
     if (
@@ -185,6 +187,30 @@ export async function POST(request: Request) {
         { status: 404 }
       );
     }
+    let discountPercent = 0;
+let finalPrice = service.price;
+
+if (use_reward && client_auth_id) {
+  const { data: rewardClient } = await supabase
+    .from("clients")
+    .select("*")
+    .eq("auth_user_id", client_auth_id)
+    .maybeSingle();
+
+  if (rewardClient && Number(rewardClient.reward_percent || 0) > 0) {
+    discountPercent = Number(rewardClient.reward_percent || 0);
+
+    const numericPrice =
+      Number(String(service.price).replace(/[^\d.,]/g, "").replace(",", ".")) || 0;
+
+    const discountedPrice = Math.max(
+      numericPrice - (numericPrice * discountPercent) / 100,
+      0
+    );
+
+    finalPrice = `${Math.round(discountedPrice)} lei`;
+  }
+}
 
     const duration = Number(service.duration_minutes || 60);
     const buffer = Number(service.buffer_minutes || 0);
@@ -282,7 +308,10 @@ export async function POST(request: Request) {
           appointment_date,
           appointment_time,
           end_time: endTime,
-          total_price: service.price,
+         total_price: finalPrice,
+reward_used: Boolean(use_reward && discountPercent > 0),
+discount_percent: discountPercent,
+final_price: finalPrice,
           notes,
           status: "pending",
           cancel_token: cancelToken,
