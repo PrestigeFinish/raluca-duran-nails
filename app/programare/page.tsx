@@ -55,8 +55,33 @@ function ProgramareContent() {
   const [clientEmail, setClientEmail] = useState("");
   const [notes, setNotes] = useState("");
   const [message, setMessage] = useState("");
+  const [loggedClient, setLoggedClient] = useState<any>(null);
+const [useReward, setUseReward] = useState(false);
 
   const selectedService = services.find((s) => s.id === serviceId);
+  useEffect(() => {
+  async function loadLoggedClient() {
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData.user;
+
+    if (!user) return;
+
+    const { data: clientData } = await supabase
+      .from("clients")
+      .select("*")
+      .or(`auth_user_id.eq.${user.id},email.eq.${user.email}`)
+      .maybeSingle();
+
+    if (clientData) {
+      setLoggedClient(clientData);
+      setClientName(clientData.name || "");
+      setClientPhone(clientData.phone || "");
+      setClientEmail(clientData.email || "");
+    }
+  }
+
+  loadLoggedClient();
+}, []);
 
   useEffect(() => {
     async function loadInitialData() {
@@ -163,6 +188,8 @@ function ProgramareContent() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        use_reward: useReward,
+client_auth_id: loggedClient?.auth_user_id || null,
         service_id: serviceId,
         client_name: clientName,
         client_phone: clientPhone,
@@ -309,6 +336,24 @@ function ProgramareContent() {
                 onChange={(e) => setNotes(e.target.value)}
               />
             </label>
+            {loggedClient && Number(loggedClient.reward_percent || 0) > 0 && (
+  <label
+    style={{
+      background: "#f5ece7",
+      padding: 16,
+      borderRadius: 16,
+      border: "1px solid #e7d8d0",
+    }}
+  >
+    <input
+      type="checkbox"
+      checked={useReward}
+      onChange={(e) => setUseReward(e.target.checked)}
+      style={{ marginRight: 8 }}
+    />
+    Folosesc reducerea loyalty de {loggedClient.reward_percent}%
+  </label>
+)}
 
             <button className="btn-primary" type="submit" disabled={!time}>
               Trimite programarea
