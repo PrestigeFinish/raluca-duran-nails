@@ -101,9 +101,14 @@ setFavorites(favoritesData || []);
   const nextMilestone = Math.ceil((points + 1) / 5) * 5;
   const pointsToNext = Math.max(nextMilestone - points, 0);
 
-  const futureAppointments = appointments.filter(
-    (a) => a.status !== "cancelled" && new Date(a.appointment_date) >= new Date(new Date().toISOString().slice(0, 10))
-  );
+const futureAppointments = appointments.filter(
+  (a) =>
+    a.status !== "cancelled" &&
+    a.status !== "completed" &&
+    a.status !== "no_show" &&
+    new Date(a.appointment_date) >=
+      new Date(new Date().toISOString().slice(0, 10))
+);
 
   const pastAppointments = appointments.filter(
     (a) => new Date(a.appointment_date) < new Date(new Date().toISOString().slice(0, 10)) || a.status === "completed"
