@@ -31,17 +31,7 @@ export default function ClientAccountPage() {
 
   async function loadAccount() {
     setLoading(true);
-    const { data: notificationsData } = await supabase
-  .from("client_notifications")
-  .select("*")
-  .eq("client_id", clientData.id)
-  .order("created_at", { ascending: false });
-
-const { data: favoritesData } = await supabase
-  .from("client_favorites")
-  .select("*")
-  .eq("client_id", clientData.id);
-
+    
     const { data: userData } = await supabase.auth.getUser();
     const user = userData.user;
 
@@ -76,6 +66,16 @@ const { data: favoritesData } = await supabase
       .order("appointment_date", { ascending: false });
 
     const { data: servicesData } = await supabase.from("services").select("*");
+    const { data: notificationsData } = await supabase
+  .from("client_notifications")
+  .select("*")
+  .eq("client_id", clientData.id)
+  .order("created_at", { ascending: false });
+
+const { data: favoritesData } = await supabase
+  .from("client_favorites")
+  .select("*")
+  .eq("client_id", clientData.id);
 
     const servicesMap = new Map((servicesData || []).map((s) => [s.id, s]));
 
