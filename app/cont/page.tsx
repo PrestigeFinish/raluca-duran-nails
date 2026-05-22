@@ -17,7 +17,7 @@ const statusLabels: Record<string, string> = {
 };
 
 function rewardPercent(points: number) {
-  return Math.floor(points / 5) * 5;
+  return Math.min(Math.floor(points / 5) * 5, 20);
 }
 
 export default function ClientAccountPage() {
@@ -215,7 +215,7 @@ async function toggleFavorite(serviceId: string) {
     }}
   >
     <span>Progress loyalty</span>
-    <span>{points % 5}/5</span>
+    <span>{Math.min(points, 20)}/20</span>
   </div>
 
   <div
@@ -229,7 +229,7 @@ async function toggleFavorite(serviceId: string) {
   >
     <div
       style={{
-        width: `${((points % 5) / 5) * 100}%`,
+        width: `${Math.min((points / 20) * 100, 100)}%`,
         height: "100%",
         background: "#b8846b",
         borderRadius: 999,
@@ -239,7 +239,7 @@ async function toggleFavorite(serviceId: string) {
   </div>
 
   <p style={{ marginTop: 12 }}>
-    La fiecare 5 puncte primești +5% reducere 🎁
+    Strânge puncte până la 20% reducere. La fiecare 5 puncte primești încă +5% 🎁
   </p>
 </div>
 
