@@ -149,9 +149,14 @@ const [useReward, setUseReward] = useState(false);
   }, [date]);
 
   const availableSlots = useMemo(() => {
-    if (!selectedService) return [];
-    return getSlots(selectedService.category, date, dailyHours);
-  }, [selectedService]);
+  if (!selectedService) return [];
+
+  return getSlots(
+    selectedService.category,
+    date,
+    dailyHours
+  );
+}, [selectedService, date, dailyHours]);
 
   function isSlotUnavailable(slot: string) {
     if (!selectedService || !date) return true;
