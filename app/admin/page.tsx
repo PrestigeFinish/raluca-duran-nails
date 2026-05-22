@@ -110,6 +110,7 @@ export default function AdminPage() {
   const [calendarMonth, setCalendarMonth] = useState(todayIso().slice(0, 7));
   const [filterService, setFilterService] = useState("all");
   const [editAppointment, setEditAppointment] = useState<any>(null);
+  const [editError, setEditError] = useState("");
 
   const [selectedDate, setSelectedDate] = useState("");
   const [blockReason, setBlockReason] = useState("");
@@ -540,6 +541,7 @@ async function saveAppointmentEdit() {
   if (!editAppointment) return;
 
   setMessage("");
+  setEditError("");
 
   const response = await fetch("/api/admin/update-appointment", {
     method: "POST",
@@ -558,10 +560,10 @@ async function saveAppointmentEdit() {
 
   const result = await response.json();
 
-  if (!response.ok) {
-    setMessage(result.error || "Nu s-a putut salva modificarea.");
-    return;
-  }
+ if (!response.ok) {
+  setEditError(result.error || "Nu s-a putut salva modificarea.");
+  return;
+}
 
   setEditAppointment(null);
   setMessage("Programarea a fost actualizată.");
@@ -1273,6 +1275,11 @@ Mută / Editează
       }}
     >
       <h2>Edit programare</h2>
+      {editError && (
+  <p className="booking-message">
+    {editError}
+  </p>
+)}
 
       <label>
         Data
@@ -1369,9 +1376,14 @@ Mută / Editează
           Salvează modificările
         </button>
 
-        <button onClick={() => setEditAppointment(null)}>
-          Închide
-        </button>
+       <button
+  onClick={() => {
+    setEditAppointment(null);
+    setEditError("");
+  }}
+>
+  Închide
+</button>
       </div>
     </div>
   </div>
