@@ -166,6 +166,12 @@ const [useReward, setUseReward] = useState(false);
   async function submitBooking(e: React.FormEvent) {
     e.preventDefault();
     setMessage("");
+    const today = new Date().toISOString().slice(0, 10);
+
+if (date && date < today) {
+  setMessage("Nu poți face programare pe o dată trecută.");
+  return;
+}
 
     if (!serviceId || !date || !time) {
       setMessage("Alege serviciul, data și ora.");
@@ -267,15 +273,16 @@ client_auth_id: loggedClient?.auth_user_id || null,
 
             <label>
               Data
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => {
-                  setDate(e.target.value);
-                  setTime("");
-                }}
-                required
-              />
+            <input
+  type="date"
+  min={new Date().toISOString().slice(0, 10)}
+  value={date}
+  onChange={(e) => {
+    setDate(e.target.value);
+    setTime("");
+  }}
+  required
+/>
             </label>
 
             <label>
