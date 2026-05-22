@@ -76,6 +76,16 @@ function ProgramareContent() {
 const [useReward, setUseReward] = useState(false);
 
   const selectedService = services.find((s) => s.id === serviceId);
+  const normalPrice =
+  Number(String(selectedService?.price || "").replace(/[^\d.,]/g, "").replace(",", ".")) || 0;
+
+const discountPercent =
+  useReward && loggedClient ? Number(loggedClient.reward_percent || 0) : 0;
+
+const discountedPrice =
+  discountPercent > 0
+    ? Math.round(normalPrice - (normalPrice * discountPercent) / 100)
+    : normalPrice;
   useEffect(() => {
   async function loadLoggedClient() {
     const { data: userData } = await supabase.auth.getUser();
@@ -369,8 +379,8 @@ client_auth_id: loggedClient?.auth_user_id || null,
                 onChange={(e) => setNotes(e.target.value)}
               />
             </label>
-            {loggedClient && Number(loggedClient.reward_percent || 0) > 0 && (
-  <label
+            {loggedClient && selectedService && Number(loggedClient.reward_percent || 0) > 0 && (
+  <div
     style={{
       background: "#f5ece7",
       padding: 16,
@@ -378,14 +388,29 @@ client_auth_id: loggedClient?.auth_user_id || null,
       border: "1px solid #e7d8d0",
     }}
   >
-    <input
-      type="checkbox"
-      checked={useReward}
-      onChange={(e) => setUseReward(e.target.checked)}
-      style={{ marginRight: 8 }}
-    />
-    Folosesc reducerea loyalty de {loggedClient.reward_percent}%
-  </label>
+    <label>
+      <input
+        type="checkbox"
+        checked={useReward}
+        onChange={(e) => setUseReward(e.target.checked)}
+        style={{ marginRight: 8 }}
+      />
+      Folosesc reducerea loyalty de {loggedClient.reward_percent}%
+    </label>
+
+    <div style={{ marginTop: 12 }}>
+      <p>Preț normal: {normalPrice} lei</p>
+
+      {useReward && (
+        <>
+          <p>Reducere loyalty: -{loggedClient.reward_percent}%</p>
+          <p>
+            <strong>Preț final: {discountedPrice} lei</strong>
+          </p>
+        </>
+      )}
+    </div>
+  </div>
 )}
 
             <button className="btn-primary" type="submit" disabled={!time}>
