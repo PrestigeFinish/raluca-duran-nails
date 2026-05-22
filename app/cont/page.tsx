@@ -420,18 +420,6 @@ async function toggleFavorite(serviceId: string) {
     </div>
   ))}
 </div>
-
-        <h2 className="hero-title admin-section-title">Istoric</h2>
-
-        <div className="admin-grid">
-          {pastAppointments.map((appointment) => (
-            <div key={appointment.id} className="admin-card">
-              <strong>{appointment.service?.name || "Serviciu"}</strong>
-              <p>{appointment.appointment_date} • {appointment.appointment_time?.slice(0, 5)}</p>
-              <p>Status: {statusLabels[appointment.status] || appointment.status}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </main>
   );
