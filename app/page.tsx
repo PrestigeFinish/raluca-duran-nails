@@ -49,6 +49,13 @@ export default function Home() {
               </p>
 
               <div className="hero-actions">
+                <a href="/login" className="btn-secondary">
+  Intră în cont
+</a>
+
+<a href="/register" className="btn-secondary">
+  Creează cont
+</a>
                 <a href="/programare?category=nails" className="btn-primary">
                   Programează-te
                 </a>
