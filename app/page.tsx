@@ -2,18 +2,15 @@ import GallerySection from "../components/GallerySection";
 
 export default function Home() {
   const nailServices = [
-    { name: "Semi cu apex", price: "90 lei" },
-    { name: "Construcție gel 1–3", price: "120 lei" },
-    { name: "Construcție gel 4–6", price: "140 lei" },
-    { name: "Întreținere gel 1–3", price: "120 lei" },
-    { name: "Întreținere gel 4–6", price: "150 lei" },
-    { name: "Slim construcție", price: "170 lei" },
-    { name: "Slim întreținere", price: "160 lei" },
-    { name: "Demontare", price: "50 lei" },
-    { name: "French glass", price: "50 lei" },
-    { name: "French de interior", price: "100 lei" },
-    { name: "Nail art", price: "Preț variabil" },
-  ];
+  { name: "Semi cu apex", price: "80 lei" },
+  { name: "Construcție gel", price: "130 lei" },
+  { name: "Întreținere gel", price: "110 lei" },
+  { name: "Slim construcție", price: "150 lei" },
+  { name: "Slim întreținere", price: "130 lei" },
+  { name: "Demontare", price: "80 lei" },
+  { name: "French glass", price: "+50 lei" },
+  { name: "Nail art, stickere și decorațiuni", price: "Incluse în preț" },
+];
 
   return (
     <>
@@ -118,6 +115,9 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <p className="section-lead" style={{ marginTop: 28 }}>
+  Pentru construcții / întrețineri peste mărimea 4 se adaugă +10 lei / mărime.
+</p>
 
             <div className="center-actions">
               <a href="/programare?category=nails" className="btn-primary">
