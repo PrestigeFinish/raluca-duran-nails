@@ -79,15 +79,29 @@ function toTime(minutes: number) {
   return `${h}:${m}`;
 }
 
-function generateSlots(category: string) {
-  const step = category === "makeup" ? 120 : 180;
-  const slots: string[] = [];
-  let current = toMinutes("09:00");
-  const end = toMinutes("19:00");
+function generateSlots(service: any, date?: string, dailyHours: any[] = []) {
+  if (!service) return [];
 
-  while (current < end) {
+  const override = date
+    ? dailyHours.find((day) => day.work_date === date)
+    : null;
+
+  if (override && !override.is_open) return [];
+
+  const start = override?.start_time?.slice(0, 5) || "09:00";
+  const end = override?.end_time?.slice(0, 5) || "19:00";
+
+  const duration =
+    Number(service.duration_minutes || 60) +
+    Number(service.buffer_minutes || 0);
+
+  const slots: string[] = [];
+  let current = toMinutes(start);
+  const endMinutes = toMinutes(end);
+
+  while (current + duration <= endMinutes) {
     slots.push(toTime(current));
-    current += step;
+    current += 60;
   }
 
   return slots;
@@ -840,7 +854,7 @@ const serviceStats = services
                     {!manualService && <p>Alege întâi serviciul.</p>}
 
                     {manualService &&
-                      generateSlots(manualService.category).map((slot) => {
+                     generateSlots(manualService, manualDate, dailyHours).map((slot) => {
                         const disabled = isManualSlotUnavailable(slot);
 
                         return (
@@ -1308,9 +1322,11 @@ Mută / Editează
       })
     }
   >
-    {generateSlots(
-      services.find((service) => service.id === editAppointment.service_id)?.category || "nails"
-    ).map((slot) => (
+   {generateSlots(
+  services.find((service) => service.id === editAppointment.service_id),
+  editAppointment.appointment_date,
+  dailyHours
+).map((slot) => (
       <option key={slot} value={slot}>
         {slot}
       </option>
