@@ -29,58 +29,7 @@ function toTime(minutes: number) {
 function getSlots(service: any, date?: string, dailyHours: any[] = []) {
   if (!service) return [];
 
-  const normalizedDate = date || "";
-
-  const override = normalizedDate
-    ? dailyHours.find((day) => day.work_date === normalizedDate)
-    : null;
-
-  if (override && !override.is_open) return [];
-
-  const start = override?.start_time?.slice(0, 5) || "09:00";
-  const end = override?.end_time?.slice(0, 5) || "19:00";
-
-  const duration =
-    Number(service.duration_minutes || 60) +
-    Number(service.buffer_minutes || 0);
-
-  const slots: string[] = [];
-  let current = toMinutes(start);
-  const endMinutes = toMinutes(end);
-
-  while (current + duration <= endMinutes) {
-    slots.push(toTime(current));
-    current += 60;
-  }
-
-  return slots;
-}
-const normalizedDate = date || "";
-
-const override = normalizedDate
-  ? dailyHours.find((day) => day.work_date === normalizedDate)
-  : null;
-
-  if (override && !override.is_open) {
-    return [];
-  }
-
-  const start = override?.start_time?.slice(0, 5) || "09:00";
-  const end = override?.end_time?.slice(0, 5) || "19:00";
-
-  const step = category === "makeup" ? 120 : 180;
-
-  const slots: string[] = [];
-  let current = toMinutes(start);
-  const endMinutes = toMinutes(end);
-
-  while (current < endMinutes) {
-    slots.push(toTime(current));
-    current += step;
-  }
-
-  return slots;
-}
+  
 
 function ProgramareContent() {
   const searchParams = useSearchParams();
