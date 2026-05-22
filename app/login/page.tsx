@@ -36,6 +36,8 @@ async function resetPassword() {
     return;
   }
 
+  setMessage("");
+
   const res = await fetch("/api/forgot-password", {
     method: "POST",
     headers: {
@@ -47,13 +49,12 @@ async function resetPassword() {
   const data = await res.json();
 
   if (!res.ok) {
-    setMessage(data.error || "Eroare la resetare.");
+    setMessage(data.error || "Eroare la trimiterea emailului.");
     return;
   }
 
-  setMessage("Ți-am trimis email pentru resetarea parolei.");
+  setMessage("Ți-am trimis email pentru resetarea parolei 💖");
 }
-
   return (
     <main className="section" style={{ paddingTop: "150px" }}>
       <div className="container">
