@@ -110,9 +110,20 @@ const futureAppointments = appointments.filter(
       new Date(new Date().toISOString().slice(0, 10))
 );
 
-  const pastAppointments = appointments.filter(
-    (a) => new Date(a.appointment_date) < new Date(new Date().toISOString().slice(0, 10)) || a.status === "completed"
-  );
+  const now = new Date();
+
+const upcomingAppointments = appointments.filter((a) => {
+  const appointmentDate = new Date(`${a.date}T${a.time}`);
+  return appointmentDate >= now && a.status !== "cancelled";
+});
+
+const completedAppointments = appointments.filter((a) => {
+  return a.status === "completed";
+});
+
+const cancelledAppointments = appointments.filter((a) => {
+  return a.status === "cancelled" || a.status === "no_show";
+});
   function isFavorite(serviceId: string) {
   return favorites.some((favorite) => favorite.service_id === serviceId);
 }
@@ -260,55 +271,134 @@ async function toggleFavorite(serviceId: string) {
 
         {message && <p className="booking-message">{message}</p>}
         
-        <h2 className="hero-title admin-section-title">Programările mele</h2>
-        <div
-  style={{
-    display: "flex",
-    gap: 12,
-    flexWrap: "wrap",
-    marginBottom: 20,
-  }}
->
-  <a className="btn-primary" href="/programare?category=nails">
-    Programare unghii
-  </a>
+        <h2 className="hero-title admin-section-title">Programări viitoare</h2>
 
-  <a className="btn-primary" href="/programare?category=makeup">
-    Programare make-up
-  </a>
+<div className="admin-grid">
+  {upcomingAppointments.length === 0 && (
+    <div className="admin-card">
+      <p>Nu ai programări viitoare.</p>
+    </div>
+  )}
+
+  {upcomingAppointments.map((appointment) => (
+    <div key={appointment.id} className="admin-card">
+      <strong>{appointment.service?.name || "Serviciu"}</strong>
+
+      <p>
+        {appointment.appointment_date} •{" "}
+        {appointment.appointment_time?.slice(0, 5)}
+      </p>
+
+      <p>
+        Status: {statusLabels[appointment.status] || appointment.status}
+      </p>
+
+      <p>
+        Categorie:{" "}
+        {appointment.service?.category === "makeup" ? "Make-up" : "Nails"}
+      </p>
+
+      <p>
+        Preț:{" "}
+        {appointment.final_price ||
+          appointment.total_price ||
+          appointment.service?.price ||
+          "-"}
+      </p>
+
+      <div className="admin-actions">
+        {appointment.cancel_token && (
+          <button
+            onClick={() => cancelAppointment(appointment.cancel_token)}
+          >
+            Anulează
+          </button>
+        )}
+
+        {appointment.reschedule_token && (
+          <a
+            href={`/gestioneaza-programarea?token=${appointment.reschedule_token}`}
+          >
+            Reprogramează
+          </a>
+        )}
+
+        <a
+          href={`/programare?category=${
+            appointment.service?.category || "nails"
+          }`}
+        >
+          Rezervă din nou
+        </a>
+      </div>
+    </div>
+  ))}
 </div>
 
-        <div className="admin-grid">
-          {futureAppointments.map((appointment) => (
-            <div key={appointment.id} className="admin-card">
-              <strong>{appointment.service?.name || "Serviciu"}</strong>
-              <p>{appointment.appointment_date} • {appointment.appointment_time?.slice(0, 5)}</p>
-              <p>Status: {statusLabels[appointment.status] || appointment.status}</p>
-              <p>
-  Categorie: {appointment.service?.category === "makeup" ? "Make-up" : "Nails"}
-</p>
-              <p>Preț: {appointment.total_price || appointment.service?.price || "-"}</p>
+<h2 className="hero-title admin-section-title">Istoric finalizate</h2>
 
-              <div className="admin-actions">
-                {appointment.cancel_token && (
-                  <button onClick={() => cancelAppointment(appointment.cancel_token)}>
-                    Anulează
-                  </button>
-                )}
+<div className="admin-grid">
+  {completedAppointments.length === 0 && (
+    <div className="admin-card">
+      <p>Nu ai programări finalizate.</p>
+    </div>
+  )}
 
-                {appointment.reschedule_token && (
-                  <a href={`/gestioneaza-programarea?token=${appointment.reschedule_token}`}>
-                    Reprogramează
-                  </a>
-                )}
+  {completedAppointments.map((appointment) => (
+    <div key={appointment.id} className="admin-card">
+      <strong>{appointment.service?.name || "Serviciu"}</strong>
 
-                <a href={`/programare?category=${appointment.service?.category || "nails"}`}>
-                  Rezervă din nou
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
+      <p>
+        {appointment.appointment_date} •{" "}
+        {appointment.appointment_time?.slice(0, 5)}
+      </p>
+
+      <p>Finalizată ✅</p>
+
+      <p>
+        Preț:{" "}
+        {appointment.final_price ||
+          appointment.total_price ||
+          appointment.service?.price ||
+          "-"}
+      </p>
+
+      <a
+        className="btn-secondary"
+        href={`/programare?category=${
+          appointment.service?.category || "nails"
+        }`}
+      >
+        Rezervă din nou
+      </a>
+    </div>
+  ))}
+</div>
+
+<h2 className="hero-title admin-section-title">Anulate / No-show</h2>
+
+<div className="admin-grid">
+  {cancelledAppointments.length === 0 && (
+    <div className="admin-card">
+      <p>Nu ai programări anulate.</p>
+    </div>
+  )}
+
+  {cancelledAppointments.map((appointment) => (
+    <div key={appointment.id} className="admin-card">
+      <strong>{appointment.service?.name || "Serviciu"}</strong>
+
+      <p>
+        {appointment.appointment_date} •{" "}
+        {appointment.appointment_time?.slice(0, 5)}
+      </p>
+
+      <p>
+        Status: {statusLabels[appointment.status] || appointment.status}
+      </p>
+    </div>
+  ))}
+</div>
         <h2 className="hero-title admin-section-title">Servicii favorite</h2>
 
 <div className="admin-grid">
