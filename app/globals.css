@@ -1147,3 +1147,84 @@ img { max-width: 100%; display: block; }
     font-size: 48px;
   }
 }
+.beauty-signature {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  color: #9f6f5d;
+  margin: -12px 0 24px;
+  letter-spacing: 0.6px;
+  font-style: italic;
+}
+
+.clean-logo-visual {
+  overflow: hidden;
+}
+
+.clean-logo-visual img {
+  width: 68%;
+}
+
+.center-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 34px;
+}
+
+.premium-price-grid {
+  margin-top: 20px;
+}
+
+.premium-price-card {
+  border-radius: 20px;
+  padding: 24px 28px;
+}
+
+.premium-makeup-banner {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 28px;
+  align-items: center;
+  background:
+    radial-gradient(circle at 90% 20%, rgba(183, 131, 110, 0.18), transparent 35%),
+    rgba(255, 248, 243, 0.95);
+  border: 1px solid rgba(183, 131, 110, 0.22);
+  border-radius: 34px;
+  padding: 48px;
+  box-shadow: 0 30px 70px rgba(58, 39, 31, 0.08);
+}
+
+.premium-makeup-banner .section-title {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.premium-makeup-banner p {
+  color: #65554c;
+  line-height: 1.8;
+  font-size: 18px;
+}
+
+.makeup-banner-actions {
+  display: grid;
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .premium-makeup-banner {
+    grid-template-columns: 1fr;
+    padding: 30px;
+  }
+
+  .premium-makeup-banner .section-title {
+    text-align: center;
+  }
+
+  .makeup-banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .beauty-signature {
+    font-size: 23px;
+  }
+}
