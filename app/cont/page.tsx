@@ -259,24 +259,7 @@ async function toggleFavorite(serviceId: string) {
         </div>
 
         {message && <p className="booking-message">{message}</p>}
-        {notifications.length > 0 && (
-  <>
-    <h2 className="hero-title admin-section-title">Notificările mele</h2>
-
-    <div className="blocked-list">
-      {notifications.slice(0, 5).map((notification) => (
-        <div key={notification.id} className="blocked-card">
-          <div>
-            <strong>{notification.title}</strong>
-            <p>{notification.message}</p>
-            <small>{notification.is_read ? "Citită" : "Nouă"}</small>
-          </div>
-        </div>
-      ))}
-    </div>
-  </>
-)}
-
+        
         <h2 className="hero-title admin-section-title">Programările mele</h2>
         <div
   style={{
