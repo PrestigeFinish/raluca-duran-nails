@@ -27,7 +27,11 @@ function toTime(minutes: number) {
 }
 
 function getSlots(category: string, date?: string, dailyHours: any[] = []) {
-  const override = dailyHours.find((day) => day.work_date === date);
+  const normalizedDate = new Date(date || "").toISOString().split("T")[0];
+
+const override = dailyHours.find(
+  (day) => day.work_date === normalizedDate
+);
 
   if (override && !override.is_open) {
     return [];
