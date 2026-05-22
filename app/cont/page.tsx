@@ -191,7 +191,7 @@ async function toggleFavorite(serviceId: string) {
   }}
 >
   <button className="btn-secondary" onClick={logout}>
-    Ieșire din cont
+    Logout
   </button>
 </div>
         <div className="admin-card" style={{ marginBottom: 24 }}>
