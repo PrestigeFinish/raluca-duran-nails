@@ -20,6 +20,7 @@ const tabs = [
   ["dashboard", "Dashboard"],
   ["programari", "Programări"],
   ["manual", "Adaugă programare"],
+  ["program", "Program lucru"],
   ["calendar", "Calendar"],
   ["cliente", "Cliente"],
   ["servicii", "Servicii"],
@@ -100,6 +101,7 @@ export default function AdminPage() {
   const [photos, setPhotos] = useState<any[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [message, setMessage] = useState("");
+  const [workingHours, setWorkingHours] = useState<any[]>([]);
 
   const [tab, setTab] = useState("dashboard");
   const [filterDate, setFilterDate] = useState("");
@@ -155,6 +157,10 @@ export default function AdminPage() {
       .from("blocked_days")
       .select("*")
       .order("blocked_date", { ascending: true });
+    const { data: workingHoursData } = await supabase
+  .from("working_hours")
+  .select("*")
+  .order("day_of_week", { ascending: true });
 
     const { data: photosData } = await supabase
       .from("gallery_photos")
@@ -170,6 +176,7 @@ export default function AdminPage() {
     setClients(clientData || []);
     setServices(serviceData || []);
     setBlockedDays(blockedData || []);
+    setWorkingHours(workingHoursData || []);
     setPhotos(photosData || []);
     setNotifications(notificationsData || []);
   }
@@ -406,6 +413,18 @@ export default function AdminPage() {
     setMessage("Status serviciu actualizat.");
     loadData();
   }
+  async function updateWorkingHour(id: string, field: string, value: any) {
+  await supabase
+    .from("working_hours")
+    .update({
+      [field]: value,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  setMessage("Program de lucru actualizat.");
+  loadData();
+}
 
   async function uploadPhoto(e: React.FormEvent) {
     e.preventDefault();
@@ -934,6 +953,74 @@ async function saveAppointmentEdit() {
               </div>
             </>
           )}
+          {tab === "program" && (
+  <>
+    <h2 className="hero-title admin-section-title">Program lucru</h2>
+
+    <p className="section-lead">
+      Setează zilele și intervalele în care se pot face programări.
+      Nails rămâne din 3 în 3 ore, Make-up din 2 în 2 ore.
+    </p>
+
+    <div className="admin-grid">
+      {workingHours.map((day) => {
+        const names: Record<number, string> = {
+          0: "Duminică",
+          1: "Luni",
+          2: "Marți",
+          3: "Miercuri",
+          4: "Joi",
+          5: "Vineri",
+          6: "Sâmbătă",
+        };
+
+        return (
+          <div key={day.id} className="admin-card">
+            <h3>{names[day.day_of_week]}</h3>
+
+            <label>
+              Deschis
+              <select
+                className="admin-input"
+                value={day.is_open ? "yes" : "no"}
+                onChange={(e) =>
+                  updateWorkingHour(day.id, "is_open", e.target.value === "yes")
+                }
+              >
+                <option value="yes">Da</option>
+                <option value="no">Nu</option>
+              </select>
+            </label>
+
+            <label>
+              Ora început
+              <input
+                className="admin-input"
+                type="time"
+                defaultValue={day.start_time?.slice(0, 5) || "09:00"}
+                onBlur={(e) =>
+                  updateWorkingHour(day.id, "start_time", e.target.value)
+                }
+              />
+            </label>
+
+            <label>
+              Ora final
+              <input
+                className="admin-input"
+                type="time"
+                defaultValue={day.end_time?.slice(0, 5) || "19:00"}
+                onBlur={(e) =>
+                  updateWorkingHour(day.id, "end_time", e.target.value)
+                }
+              />
+            </label>
+          </div>
+        );
+      })}
+    </div>
+  </>
+)}
 
           {tab === "blocari" && (
             <>
