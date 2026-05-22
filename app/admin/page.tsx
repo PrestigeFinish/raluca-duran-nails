@@ -113,6 +113,12 @@ export default function AdminPage() {
 
   const [selectedDate, setSelectedDate] = useState("");
   const [blockReason, setBlockReason] = useState("");
+  const [dailyHours, setDailyHours] = useState<any[]>([]);
+const [dailyDate, setDailyDate] = useState("");
+const [dailyStart, setDailyStart] = useState("09:00");
+const [dailyEnd, setDailyEnd] = useState("19:00");
+const [dailyOpen, setDailyOpen] = useState(true);
+const [dailyNote, setDailyNote] = useState("");
 
   const [photoCategory, setPhotoCategory] = useState("nails");
   const [photoTitle, setPhotoTitle] = useState("");
@@ -157,6 +163,10 @@ export default function AdminPage() {
       .from("blocked_days")
       .select("*")
       .order("blocked_date", { ascending: true });
+    const { data: dailyHoursData } = await supabase
+  .from("daily_working_hours")
+  .select("*")
+  .order("work_date", { ascending: true });
     const { data: workingHoursData } = await supabase
   .from("working_hours")
   .select("*")
@@ -176,6 +186,7 @@ export default function AdminPage() {
     setClients(clientData || []);
     setServices(serviceData || []);
     setBlockedDays(blockedData || []);
+    setDailyHours(dailyHoursData || []);
     setWorkingHours(workingHoursData || []);
     setPhotos(photosData || []);
     setNotifications(notificationsData || []);
@@ -383,6 +394,61 @@ export default function AdminPage() {
     setMessage("Zi blocată.");
     loadData();
   }
+  const hourOptions = [
+  "07:00",
+  "08:00",
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+  "18:00",
+  "19:00",
+  "20:00",
+  "21:00",
+];
+
+async function saveDailyHours(e: React.FormEvent) {
+  e.preventDefault();
+
+  if (!dailyDate) {
+    setMessage("Alege data.");
+    return;
+  }
+
+  await supabase.from("daily_working_hours").upsert(
+    [
+      {
+        work_date: dailyDate,
+        is_open: dailyOpen,
+        start_time: dailyStart,
+        end_time: dailyEnd,
+        note: dailyNote || null,
+        updated_at: new Date().toISOString(),
+      },
+    ],
+    { onConflict: "work_date" }
+  );
+
+  setDailyDate("");
+  setDailyStart("09:00");
+  setDailyEnd("19:00");
+  setDailyOpen(true);
+  setDailyNote("");
+
+  setMessage("Programul zilei a fost salvat.");
+  loadData();
+}
+
+async function deleteDailyHours(id: string) {
+  await supabase.from("daily_working_hours").delete().eq("id", id);
+  setMessage("Program special șters.");
+  loadData();
+}
 
   async function unblockDay(id: string) {
     await supabase.from("blocked_days").delete().eq("id", id);
@@ -955,69 +1021,91 @@ async function saveAppointmentEdit() {
           )}
           {tab === "program" && (
   <>
-    <h2 className="hero-title admin-section-title">Program lucru</h2>
+    <h2 className="hero-title admin-section-title">Program pe zile exacte</h2>
 
     <p className="section-lead">
-      Setează zilele și intervalele în care se pot face programări.
-      Nails rămâne din 3 în 3 ore, Make-up din 2 în 2 ore.
+      Setează program special pentru o anumită zi. Dacă nu setezi nimic,
+      site-ul folosește programul standard: Nails 09/12/15/18, Make-up
+      09/11/13/15/17/19.
     </p>
 
-    <div className="admin-grid">
-      {workingHours.map((day) => {
-        const names: Record<number, string> = {
-          0: "Duminică",
-          1: "Luni",
-          2: "Marți",
-          3: "Miercuri",
-          4: "Joi",
-          5: "Vineri",
-          6: "Sâmbătă",
-        };
+    <form onSubmit={saveDailyHours} className="booking-form">
+      <label>
+        Data
+        <input
+          type="date"
+          value={dailyDate}
+          onChange={(e) => setDailyDate(e.target.value)}
+          required
+        />
+      </label>
 
-        return (
-          <div key={day.id} className="admin-card">
-            <h3>{names[day.day_of_week]}</h3>
+      <label>
+        Zi deschisă?
+        <select
+          value={dailyOpen ? "yes" : "no"}
+          onChange={(e) => setDailyOpen(e.target.value === "yes")}
+        >
+          <option value="yes">Da</option>
+          <option value="no">Nu</option>
+        </select>
+      </label>
 
-            <label>
-              Deschis
-              <select
-                className="admin-input"
-                value={day.is_open ? "yes" : "no"}
-                onChange={(e) =>
-                  updateWorkingHour(day.id, "is_open", e.target.value === "yes")
-                }
-              >
-                <option value="yes">Da</option>
-                <option value="no">Nu</option>
-              </select>
-            </label>
+      <label>
+        Ora început
+        <select
+          value={dailyStart}
+          onChange={(e) => setDailyStart(e.target.value)}
+        >
+          {hourOptions.map((hour) => (
+            <option key={hour} value={hour}>
+              {hour}
+            </option>
+          ))}
+        </select>
+      </label>
 
-            <label>
-              Ora început
-              <input
-                className="admin-input"
-                type="time"
-                defaultValue={day.start_time?.slice(0, 5) || "09:00"}
-                onBlur={(e) =>
-                  updateWorkingHour(day.id, "start_time", e.target.value)
-                }
-              />
-            </label>
+      <label>
+        Ora final
+        <select value={dailyEnd} onChange={(e) => setDailyEnd(e.target.value)}>
+          {hourOptions.map((hour) => (
+            <option key={hour} value={hour}>
+              {hour}
+            </option>
+          ))}
+        </select>
+      </label>
 
-            <label>
-              Ora final
-              <input
-                className="admin-input"
-                type="time"
-                defaultValue={day.end_time?.slice(0, 5) || "19:00"}
-                onBlur={(e) =>
-                  updateWorkingHour(day.id, "end_time", e.target.value)
-                }
-              />
-            </label>
+      <label>
+        Notă
+        <input
+          value={dailyNote}
+          onChange={(e) => setDailyNote(e.target.value)}
+          placeholder="Ex: program scurt, eveniment, liber..."
+        />
+      </label>
+
+      <button className="btn-primary" type="submit">
+        Salvează programul zilei
+      </button>
+    </form>
+
+    <div className="blocked-list">
+      {dailyHours.map((day) => (
+        <div key={day.id} className="blocked-card">
+          <div>
+            <strong>{day.work_date}</strong>
+            <p>
+              {day.is_open
+                ? `${day.start_time?.slice(0, 5)} - ${day.end_time?.slice(0, 5)}`
+                : "Închis"}
+            </p>
+            {day.note && <p>{day.note}</p>}
           </div>
-        );
-      })}
+
+          <button onClick={() => deleteDailyHours(day.id)}>Șterge</button>
+        </div>
+      ))}
     </div>
   </>
 )}
