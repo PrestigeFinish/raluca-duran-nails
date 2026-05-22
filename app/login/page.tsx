@@ -30,18 +30,29 @@ export default function LoginPage() {
     window.location.href = "/cont";
   }
 
-  async function resetPassword() {
-    if (!email) {
-      setMessage("Scrie emailul pentru resetare.");
-      return;
-    }
-
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://ralucabeauty.ro/reset-password",
-    });
-
-    setMessage("Ți-am trimis email pentru resetarea parolei.");
+async function resetPassword() {
+  if (!email) {
+    setMessage("Scrie emailul pentru resetare.");
+    return;
   }
+
+  const res = await fetch("/api/forgot-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    setMessage(data.error || "Eroare la resetare.");
+    return;
+  }
+
+  setMessage("Ți-am trimis email pentru resetarea parolei.");
+}
 
   return (
     <main className="section" style={{ paddingTop: "150px" }}>
