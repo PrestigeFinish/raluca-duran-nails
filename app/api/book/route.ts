@@ -327,6 +327,35 @@ final_price: finalPrice,
         { status: 500 }
       );
     }
+    if (use_reward && client_auth_id && discountPercent > 0) {
+  const { data: rewardClient } = await supabase
+    .from("clients")
+    .select("*")
+    .eq("auth_user_id", client_auth_id)
+    .maybeSingle();
+
+  if (rewardClient) {
+    const pointsToRemove = discountPercent;
+    const remainingPoints = Math.max(
+      Number(rewardClient.loyalty_points || 0) - pointsToRemove,
+      0
+    );
+
+    const newRewardPercent = Math.min(
+      Math.floor(remainingPoints / 5) * 5,
+      20
+    );
+
+    await supabase
+      .from("clients")
+      .update({
+        loyalty_points: remainingPoints,
+        reward_percent: newRewardPercent,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", rewardClient.id);
+  }
+}
 
     await supabase.from("admin_notifications").insert([
       {
