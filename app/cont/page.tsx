@@ -183,6 +183,17 @@ async function toggleFavorite(serviceId: string) {
   return (
     <main className="section" style={{ paddingTop: "150px" }}>
       <div className="container">
+        <div
+  style={{
+    display: "flex",
+    justifyContent: "flex-end",
+    marginBottom: 20,
+  }}
+>
+  <button className="btn-secondary" onClick={logout}>
+    Ieșire din cont
+  </button>
+</div>
         <div className="admin-card" style={{ marginBottom: 24 }}>
           <h1 className="hero-title section-title">
             Bun venit, {client?.name || "frumoaso"} 💅
@@ -264,9 +275,7 @@ async function toggleFavorite(serviceId: string) {
 </p>
           </div>
 
-          <button className="btn-secondary" onClick={logout}>
-            Logout
-          </button>
+          
         </div>
 
         {message && <p className="booking-message">{message}</p>}
