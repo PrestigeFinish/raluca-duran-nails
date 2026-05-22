@@ -26,16 +26,28 @@ function toTime(minutes: number) {
   return `${h}:${m}`;
 }
 
-function getSlots(category: string) {
-  if (category === "nails") {
-    return ["09:00", "12:00", "15:00", "18:00"];
+function getSlots(category: string, date?: string, dailyHours: any[] = []) {
+  const override = dailyHours.find((day) => day.work_date === date);
+
+  if (override && !override.is_open) {
+    return [];
   }
 
-  if (category === "makeup") {
-    return ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00"];
+  const start = override?.start_time?.slice(0, 5) || "09:00";
+  const end = override?.end_time?.slice(0, 5) || "19:00";
+
+  const step = category === "makeup" ? 120 : 180;
+
+  const slots: string[] = [];
+  let current = toMinutes(start);
+  const endMinutes = toMinutes(end);
+
+  while (current < endMinutes) {
+    slots.push(toTime(current));
+    current += step;
   }
 
-  return [];
+  return slots;
 }
 
 function ProgramareContent() {
@@ -45,6 +57,7 @@ function ProgramareContent() {
   const [services, setServices] = useState<any[]>([]);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
+  const [dailyHours, setDailyHours] = useState<any[]>([]);
 
   const [serviceId, setServiceId] = useState("");
   const [date, setDate] = useState("");
@@ -96,9 +109,13 @@ const [useReward, setUseReward] = useState(false);
       const { data: blockedData } = await supabase
         .from("blocked_days")
         .select("blocked_date");
+      const { data: dailyHoursData } = await supabase
+  .from("daily_working_hours")
+  .select("*");
 
       setServices(servicesData || []);
       setBlockedDates((blockedData || []).map((d: any) => d.blocked_date));
+      setDailyHours(dailyHoursData || []);
     }
 
     loadInitialData();
@@ -129,7 +146,7 @@ const [useReward, setUseReward] = useState(false);
 
   const availableSlots = useMemo(() => {
     if (!selectedService) return [];
-    return getSlots(selectedService.category);
+    return getSlots(selectedService.category, date, dailyHours);
   }, [selectedService]);
 
   function isSlotUnavailable(slot: string) {
