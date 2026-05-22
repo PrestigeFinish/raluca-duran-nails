@@ -83,7 +83,7 @@ function generateSlots(category: string) {
   const step = category === "makeup" ? 120 : 180;
   const slots: string[] = [];
   let current = toMinutes("09:00");
-  const end = toMinutes("18:00");
+  const end = toMinutes("19:00");
 
   while (current < end) {
     slots.push(toTime(current));
