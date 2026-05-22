@@ -7,7 +7,7 @@ export default function MakeupPage() {
     { name: "Make-up eveniment", price: "Preț la cerere" },
     { name: "Make-up mireasă", price: "Preț la cerere" },
     { name: "Machiaj ședință foto", price: "Preț la cerere" },
-    { name: "Pachet nails + make-up", price: "Preț la cerere" },
+  
   ];
 
   return (
@@ -17,13 +17,16 @@ export default function MakeupPage() {
           <img className="nav-logo" src="/logo-makeup.png" alt="Raluca Duran Make-up" />
 
           <div className="nav-links">
-            <a href="/">Nails</a>
-            <a href="#services">Servicii</a>
-            <a href="#packages">Pachete</a>
-            <a href="/programare?category=makeup" className="btn-primary">
-              Programare
-            </a>
-          </div>
+  <a href="/">Nails</a>
+  <a href="/makeup">Make-up</a>
+  <a href="#gallery">Galerie</a>
+  <a href="/login">Cont</a>
+  <a href="#">Instagram</a>
+  <a href="#">TikTok</a>
+  <a href="/programare?category=makeup" className="btn-primary">
+    Programare
+  </a>
+</div>
         </div>
       </nav>
 
@@ -78,39 +81,9 @@ export default function MakeupPage() {
           </div>
         </section>
 
-        <section className="section" id="packages">
-          <div className="container">
-            <h2 className="hero-title section-title">Pachete Beauty</h2>
-            <p className="section-lead">
-              Pentru evenimente importante, poți combina serviciile de make-up
-              cu serviciile de nails într-o experiență completă.
-            </p>
+        
 
-            <div className="cards-grid">
-              <div className="info-card">
-                <h3>Event Ready</h3>
-                <p>Make-up de eveniment + nails pentru un look complet și elegant.</p>
-              </div>
-
-              <div className="info-card">
-                <h3>Bridal Beauty</h3>
-                <p>Pachet dedicat mireselor: machiaj rafinat și manichiură premium pentru ziua cea mare.</p>
-              </div>
-
-              <div className="info-card">
-                <h3>Photoshoot Look</h3>
-                <p>Machiaj potrivit pentru ședințe foto, content, evenimente sau apariții speciale.</p>
-              </div>
-
-              <div className="info-card">
-                <h3>Gift Voucher</h3>
-                <p>O experiență beauty oferită cadou pentru aniversări, surprize sau momente speciale.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section section-soft">
+       <section className="section section-soft" id="gallery">
           <div className="container">
             <h2 className="hero-title section-title">Galerie Make-up</h2>
             <GallerySection category="makeup" />
