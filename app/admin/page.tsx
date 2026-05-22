@@ -301,8 +301,7 @@ export default function AdminPage() {
     const client = clients.find((c) => c.id === appointment.client_id);
 
     const newPoints = Number(client?.loyalty_points || 0) + 1;
-    const newRewardPercent = Math.floor(newPoints / 5) * 5;
-
+    const newRewardPercent = Math.min(Math.floor(newPoints / 5) * 5, 20);
     await supabase
       .from("clients")
       .update({
