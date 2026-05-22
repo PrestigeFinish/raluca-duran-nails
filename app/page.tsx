@@ -1,21 +1,39 @@
 import GallerySection from "../components/GallerySection";
 
 export default function Home() {
+  const nailServices = [
+    { name: "Semi cu apex", price: "90 lei" },
+    { name: "Construcție gel 1–3", price: "120 lei" },
+    { name: "Construcție gel 4–6", price: "140 lei" },
+    { name: "Întreținere gel 1–3", price: "120 lei" },
+    { name: "Întreținere gel 4–6", price: "150 lei" },
+    { name: "Slim construcție", price: "170 lei" },
+    { name: "Slim întreținere", price: "160 lei" },
+    { name: "Demontare", price: "50 lei" },
+    { name: "French glass", price: "50 lei" },
+    { name: "French de interior", price: "100 lei" },
+    { name: "Nail art", price: "Preț variabil" },
+  ];
+
   return (
     <>
       <nav className="navbar premium-nav">
         <div className="container nav-inner">
           <a href="/">
-            <img className="nav-logo" src="/logo.png" alt="Raluca Duran Beauty" />
+            <img className="nav-logo" src="/logo.png" alt="Raluca Duran Nails" />
           </a>
 
           <div className="nav-links">
-            <a href="/nails">Nails</a>
+            <a href="#services">Nails</a>
             <a href="/makeup">Make-up</a>
-            <a href="/programare?category=nails">Booking</a>
+            <a href="#gallery">Galerie</a>
+            <a href="#loyalty">Loyalty</a>
             <a href="/login">Cont</a>
-            <a href="#" aria-label="Instagram">Instagram</a>
-            <a href="#" aria-label="TikTok">TikTok</a>
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="/programare?category=nails" className="btn-primary">
+              Programare
+            </a>
           </div>
         </div>
       </nav>
@@ -24,87 +42,112 @@ export default function Home() {
         <section className="premium-hero">
           <div className="container premium-hero-grid">
             <div className="premium-hero-content">
-              <p className="premium-kicker">Raluca Duran Beauty • Ploiești</p>
+              <p className="premium-kicker">Nails • Make-up • Ploiești</p>
 
               <h1 className="hero-title premium-title">
-                Nails premium.
+                Nail studio by
                 <br />
-                Make-up elegant.
-                <br />
-                Beauty experience.
+                Raluca Duran
               </h1>
 
+              <p className="beauty-signature">
+                Beauty experience by Raluca Duran
+              </p>
+
               <p className="premium-text">
-                Un studio dedicat detaliilor impecabile: manichiuri elegante,
-                slim nails, nail art, make-up pentru evenimente și o experiență
-                online completă pentru programări, cont client și loyalty.
+                Manichiuri elegante, feminine și atent lucrate: semi cu apex,
+                gel, construcție, întreținere, slim nails și nail art.
+                Pentru momente speciale, studioul oferă și servicii de make-up.
               </p>
 
               <div className="hero-actions">
-                <a href="/nails" className="btn-primary">Pagina Nails</a>
-                <a href="/makeup" className="btn-secondary">Pagina Make-up</a>
-                <a href="/login" className="btn-secondary">Intră în cont</a>
+                <a href="/programare?category=nails" className="btn-primary">
+                  Programare Nails
+                </a>
+
+                <a href="/makeup" className="btn-secondary">
+                  Vezi Make-up
+                </a>
+
+                <a href="/login" className="btn-secondary">
+                  Intră în cont
+                </a>
               </div>
             </div>
 
             <div className="premium-hero-visual clean-logo-visual">
-              <img src="/logo.png" alt="Raluca Duran Beauty" />
+              <img src="/logo.png" alt="Raluca Duran Nails" />
             </div>
           </div>
         </section>
 
         <section className="premium-stats">
           <div className="container premium-stats-grid">
-            <div><strong>Nails</strong><span>activitatea principală</span></div>
-            <div><strong>Make-up</strong><span>evenimente & glam</span></div>
-            <div><strong>Online</strong><span>programări rapide</span></div>
-            <div><strong>Loyalty</strong><span>puncte & reduceri</span></div>
+            <div>
+              <strong>Nails</strong>
+              <span>semi, gel, slim & art</span>
+            </div>
+            <div>
+              <strong>Make-up</strong>
+              <span>evenimente & glam</span>
+            </div>
+            <div>
+              <strong>Online</strong>
+              <span>programări rapide</span>
+            </div>
+            <div>
+              <strong>Rewards</strong>
+              <span>puncte loyalty</span>
+            </div>
           </div>
         </section>
 
         <section className="section" id="services">
           <div className="container">
-            <h2 className="hero-title section-title">Alege experiența</h2>
+            <h2 className="hero-title section-title">Servicii & Prețuri Nails</h2>
             <p className="section-lead">
-              Două pagini separate, fiecare cu servicii, prețuri, galerie și booking dedicat.
+              Alege serviciul potrivit pentru stilul tău. Pentru nail art,
+              prețul poate varia în funcție de complexitatea modelului.
             </p>
 
-            <div className="premium-service-layout">
-              <div className="premium-service-card">
-                <span className="premium-label">Main service</span>
-                <h3>Nails</h3>
-                <p>
-                  Semi cu apex, construcție, întreținere, slim nails, french,
-                  nail art și detalii fine pentru o manichiură premium.
-                </p>
-
-                <div className="mini-service-list">
-                  <span>Semi cu apex</span>
-                  <span>Gel</span>
-                  <span>Slim nails</span>
-                  <span>French</span>
-                  <span>Nail art</span>
+            <div className="services-grid premium-price-grid">
+              {nailServices.map((service, index) => (
+                <div key={index} className="service-card premium-price-card">
+                  <span>{service.name}</span>
+                  <strong>{service.price}</strong>
                 </div>
+              ))}
+            </div>
 
-                <a href="/nails" className="btn-primary">Vezi Nails</a>
+            <div className="center-actions">
+              <a href="/programare?category=nails" className="btn-primary">
+                Programează Nails
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section className="section section-soft">
+          <div className="container">
+            <div className="premium-makeup-banner">
+              <div>
+                <p className="premium-kicker">Make-up by Raluca Duran</p>
+                <h2 className="hero-title section-title">
+                  Look complet pentru evenimente
+                </h2>
+                <p>
+                  Machiaj elegant, feminin și luminos pentru evenimente, ședințe
+                  foto, ocazii speciale și momente în care vrei să te simți impecabil.
+                </p>
               </div>
 
-              <div className="premium-service-card dark">
-                <span className="premium-label">Beauty add-on</span>
-                <h3>Make-up</h3>
-                <p>
-                  Machiaj de zi, seară, eveniment, bridal și look-uri elegante
-                  pentru momente speciale.
-                </p>
-
-                <div className="mini-service-list">
-                  <span>Eveniment</span>
-                  <span>Bridal</span>
-                  <span>Glam</span>
-                  <span>Photoshoot</span>
-                </div>
-
-                <a href="/makeup" className="btn-primary">Vezi Make-up</a>
+              <div className="makeup-banner-actions">
+                <a href="/makeup" className="btn-primary">
+                  Deschide pagina Make-up
+                </a>
+                <a href="/programare?category=makeup" className="btn-secondary">
+                  Programare Make-up
+                </a>
               </div>
             </div>
           </div>
@@ -114,7 +157,7 @@ export default function Home() {
           <div className="container">
             <h2 className="hero-title section-title">Galerie Nails</h2>
             <p className="section-lead">
-              Galerie administrabilă din admin. Tu doar urci pozele, iar ele apar automat.
+              Galerie administrabilă din admin. Pozele încărcate pentru Nails apar automat aici.
             </p>
 
             <div className="premium-gallery-frame">
@@ -128,45 +171,81 @@ export default function Home() {
             <h2 className="hero-title section-title">De ce Raluca Duran Beauty</h2>
 
             <div className="premium-why-grid">
-              <div><strong>01</strong><h3>Detalii curate</h3><p>Lucrări feminine, elegante și atent finisate.</p></div>
-              <div><strong>02</strong><h3>Booking online</h3><p>Alegi serviciul, data și ora direct pe site.</p></div>
-              <div><strong>03</strong><h3>Cont client</h3><p>Vezi programările, istoricul, punctele și reducerile.</p></div>
-              <div><strong>04</strong><h3>Loyalty</h3><p>Strângi puncte și primești reduceri până la 20%.</p></div>
+              <div>
+                <strong>01</strong>
+                <h3>Detalii curate</h3>
+                <p>Lucrări feminine, elegante și atent finisate.</p>
+              </div>
+
+              <div>
+                <strong>02</strong>
+                <h3>Booking online</h3>
+                <p>Alegi serviciul, data și ora direct pe site.</p>
+              </div>
+
+              <div>
+                <strong>03</strong>
+                <h3>Cont client</h3>
+                <p>Vezi programările, istoricul, punctele și reducerile.</p>
+              </div>
+
+              <div>
+                <strong>04</strong>
+                <h3>Loyalty</h3>
+                <p>Strângi puncte și primești reduceri până la 20%.</p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="premium-loyalty">
+        <section className="premium-loyalty" id="loyalty">
           <div className="container premium-loyalty-box">
             <div>
               <p className="premium-kicker">Beauty rewards</p>
-              <h2 className="hero-title section-title">Loyalty pentru clientele care revin</h2>
+              <h2 className="hero-title section-title">
+                Loyalty pentru clientele care revin
+              </h2>
               <p>
-                La fiecare programare finalizată primești puncte. 5 puncte = 5% reducere,
-                10 puncte = 10%, până la 20%.
+                La fiecare programare finalizată primești puncte. 5 puncte =
+                5% reducere, 10 puncte = 10%, până la 20%.
               </p>
             </div>
 
             <div className="loyalty-card">
-              <strong>5 puncte</strong><span>5% reducere</span>
-              <strong>10 puncte</strong><span>10% reducere</span>
-              <strong>20 puncte</strong><span>20% reducere</span>
-              <a href="/register" className="btn-primary">Creează cont</a>
+              <strong>5 puncte</strong>
+              <span>5% reducere</span>
+              <strong>10 puncte</strong>
+              <span>10% reducere</span>
+              <strong>20 puncte</strong>
+              <span>20% reducere</span>
+
+              <a href="/register" className="btn-primary">
+                Creează cont
+              </a>
             </div>
           </div>
         </section>
 
         <section className="section">
           <div className="container premium-cta">
-            <h2 className="hero-title section-title">Pregătită pentru următoarea programare?</h2>
+            <h2 className="hero-title section-title">
+              Ești pregătită pentru următoarea programare?
+            </h2>
+
             <p className="section-lead">
-              Alege Nails sau Make-up și rezervă direct online.
+              Alege serviciul, data și ora. Totul este rapid, clar și elegant.
             </p>
 
             <div className="hero-actions" style={{ justifyContent: "center" }}>
-              <a href="/programare?category=nails" className="btn-primary">Booking Nails</a>
-              <a href="/programare?category=makeup" className="btn-secondary">Booking Make-up</a>
-              <a href="/login" className="btn-secondary">Cont client</a>
+              <a href="/programare?category=nails" className="btn-primary">
+                Programare Nails
+              </a>
+              <a href="/programare?category=makeup" className="btn-secondary">
+                Programare Make-up
+              </a>
+              <a href="/login" className="btn-secondary">
+                Cont client
+              </a>
             </div>
           </div>
         </section>
@@ -180,7 +259,7 @@ export default function Home() {
 
             <div>
               <h3>Pagini</h3>
-              <a href="/nails">Nails</a>
+              <a href="/">Nails</a>
               <a href="/makeup">Make-up</a>
               <a href="/programare?category=nails">Booking Nails</a>
               <a href="/programare?category=makeup">Booking Make-up</a>
