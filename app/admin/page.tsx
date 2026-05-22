@@ -617,6 +617,41 @@ async function saveAppointmentEdit() {
     .reduce((sum, a) => sum + parsePrice(a.services?.price || a.total_price), 0);
 
   const todayAppointments = appointments.filter((a) => a.appointment_date === todayIso());
+  const tomorrowIso = new Date(Date.now() + 24 * 60 * 60 * 1000)
+  .toISOString()
+  .slice(0, 10);
+
+const tomorrowAppointments = appointments.filter(
+  (a) => a.appointment_date === tomorrowIso
+);
+
+const weekAppointments = appointments.filter(
+  (a) => a.appointment_date >= week.start && a.appointment_date <= week.end
+);
+
+const newClientsMonth = clients.filter((client) =>
+  client.created_at?.slice(0, 7) === calendarMonth
+);
+
+const activeRewards = clients.filter(
+  (client) => Number(client.reward_percent || 0) > 0
+);
+
+const noShowClients = clients.filter((client) => {
+  const clientAppointments = appointments.filter(
+    (a) => a.client_phone === client.phone
+  );
+
+  return clientAppointments.some((a) => a.status === "no_show");
+});
+
+const serviceStats = services
+  .map((service) => ({
+    ...service,
+    count: appointments.filter((a) => a.service_id === service.id).length,
+  }))
+  .sort((a, b) => b.count - a.count)
+  .slice(0, 5);
   const calendarAppointments = appointments.filter((a) => sameMonth(a.appointment_date, calendarMonth));
 
   return (
@@ -684,6 +719,53 @@ async function saveAppointmentEdit() {
                   </div>
                 ))}
               </div>
+              <h2 className="hero-title admin-section-title">Smart business</h2>
+
+<div className="admin-stats">
+  <div className="admin-stat-card">
+    <strong>{tomorrowAppointments.length}</strong>
+    <span>Programări mâine</span>
+  </div>
+
+  <div className="admin-stat-card">
+    <strong>{weekAppointments.length}</strong>
+    <span>Programări săptămâna asta</span>
+  </div>
+
+  <div className="admin-stat-card">
+    <strong>{newClientsMonth.length}</strong>
+    <span>Cliente noi luna asta</span>
+  </div>
+
+  <div className="admin-stat-card">
+    <strong>{activeRewards.length}</strong>
+    <span>Cliente cu reward activ</span>
+  </div>
+</div>
+
+<div className="admin-grid">
+  <div className="admin-card">
+    <h3>Top servicii</h3>
+
+    {serviceStats.map((service) => (
+      <p key={service.id}>
+        {service.name} — {service.count} programări
+      </p>
+    ))}
+  </div>
+
+  <div className="admin-card">
+    <h3>Cliente cu no-show</h3>
+
+    {noShowClients.length === 0 && <p>Nicio clientă cu no-show.</p>}
+
+    {noShowClients.slice(0, 5).map((client) => (
+      <p key={client.id}>
+        {client.name} — {client.phone}
+      </p>
+    ))}
+  </div>
+</div>
 
               <h2 className="hero-title admin-section-title">Notificări recente</h2>
 
@@ -879,7 +961,7 @@ async function saveAppointmentEdit() {
                           <button onClick={() => updateStatus(appointment.id, "cancelled")}>Anulează</button>
                           <button onClick={() => updateStatus(appointment.id, "no_show")}>Nu a venit</button>
                           <button onClick={() => setEditAppointment({ ...appointment })}>
-  Editează
+Mută / Editează
 </button>
                           <button onClick={() => deleteAppointment(appointment.id)}>Șterge definitiv</button>
                           <a href={`https://wa.me/4${String(appointment.client_phone).replace(/^0/, "")}`} target="_blank">
@@ -1203,20 +1285,27 @@ async function saveAppointmentEdit() {
         />
       </label>
 
-      <label>
-        Ora
-        <input
-          className="admin-input"
-          value={editAppointment.appointment_time}
-          onChange={(e) =>
-            setEditAppointment({
-              ...editAppointment,
-              appointment_time: e.target.value,
-            })
-          }
-        />
-      </label>
-
+     <label>
+  Ora
+  <select
+    className="admin-input"
+    value={editAppointment.appointment_time?.slice(0, 5)}
+    onChange={(e) =>
+      setEditAppointment({
+        ...editAppointment,
+        appointment_time: e.target.value,
+      })
+    }
+  >
+    {generateSlots(
+      services.find((service) => service.id === editAppointment.service_id)?.category || "nails"
+    ).map((slot) => (
+      <option key={slot} value={slot}>
+        {slot}
+      </option>
+    ))}
+  </select>
+</label>
       <label>
         Serviciu
         <select
