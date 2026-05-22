@@ -567,31 +567,6 @@ async function saveAppointmentEdit() {
   setMessage("Programarea a fost actualizată.");
   loadData();
 }
-
-  const response = await fetch("/api/admin/update-appointment", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      appointmentId: editAppointment.id,
-      serviceId: editAppointment.service_id,
-      appointmentDate: editAppointment.appointment_date,
-      appointmentTime: editAppointment.appointment_time,
-      notes: editAppointment.notes,
-      status: editAppointment.status,
-    }),
-  });
-
-  const result = await response.json();
-
-  if (!response.ok) {
-    setMessage(result.error || "Nu s-a putut salva.");
-    return;
-  }
-
-  setEditAppointment(null);
-  setMessage("Programare actualizată.");
-  loadData();
-}
   async function markNotificationRead(id: string) {
     await supabase
       .from("admin_notifications")
