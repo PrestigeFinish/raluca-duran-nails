@@ -26,6 +26,7 @@ const tabs = [
   ["servicii", "Servicii"],
   ["blocari", "Blocări"],
   ["galerie", "Galerie"],
+  ["oferte", "Oferte"],
 ];
 
 function todayIso() {
@@ -113,6 +114,7 @@ export default function AdminPage() {
   const [services, setServices] = useState<any[]>([]);
   const [blockedDays, setBlockedDays] = useState<any[]>([]);
   const [photos, setPhotos] = useState<any[]>([]);
+  const [offers, setOffers] = useState<any[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [message, setMessage] = useState("");
   const [workingHours, setWorkingHours] = useState<any[]>([]);
@@ -138,6 +140,9 @@ const [dailyNote, setDailyNote] = useState("");
   const [photoCategory, setPhotoCategory] = useState("nails");
   const [photoTitle, setPhotoTitle] = useState("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [offerTitle, setOfferTitle] = useState("");
+const [offerLink, setOfferLink] = useState("");
+const [offerFile, setOfferFile] = useState<File | null>(null);
 
   const [manualServiceId, setManualServiceId] = useState("");
   const [manualDate, setManualDate] = useState("");
@@ -191,6 +196,10 @@ const [dailyNote, setDailyNote] = useState("");
       .from("gallery_photos")
       .select("*")
       .order("created_at", { ascending: false });
+    const { data: offersData } = await supabase
+  .from("monthly_offers")
+  .select("*")
+  .order("created_at", { ascending: false });
 
     const { data: notificationsData } = await supabase
       .from("admin_notifications")
@@ -204,6 +213,7 @@ const [dailyNote, setDailyNote] = useState("");
     setDailyHours(dailyHoursData || []);
     setWorkingHours(workingHoursData || []);
     setPhotos(photosData || []);
+    setOffers(offersData || []);
     setNotifications(notificationsData || []);
   }
 
@@ -550,6 +560,63 @@ async function deleteDailyHours(id: string) {
     setMessage("Poză ștearsă.");
     loadData();
   }
+  async function uploadOffer(e: React.FormEvent) {
+  e.preventDefault();
+
+  if (!offerFile) {
+    setMessage("Alege poza pentru ofertă.");
+    return;
+  }
+
+  const fileName = `offer-${Date.now()}-${offerFile.name}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("gallery")
+    .upload(fileName, offerFile);
+
+  if (uploadError) {
+    setMessage("Nu s-a putut încărca oferta.");
+    return;
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("gallery")
+    .getPublicUrl(fileName);
+
+  await supabase.from("monthly_offers").insert([
+    {
+      title: offerTitle || "Oferta lunii",
+      image_url: publicUrlData.publicUrl,
+      target_link: offerLink || "/programare?category=nails",
+      is_active: true,
+    },
+  ]);
+
+  setOfferTitle("");
+  setOfferLink("");
+  setOfferFile(null);
+  setMessage("Oferta a fost încărcată.");
+  loadData();
+}
+
+async function toggleOffer(id: string, isActive: boolean) {
+  await supabase
+    .from("monthly_offers")
+    .update({ is_active: !isActive })
+    .eq("id", id);
+
+  setMessage("Status ofertă actualizat.");
+  loadData();
+}
+
+async function deleteOffer(id: string) {
+  if (!confirm("Ștergi oferta?")) return;
+
+  await supabase.from("monthly_offers").delete().eq("id", id);
+
+  setMessage("Oferta a fost ștearsă.");
+  loadData();
+}
 
 async function saveAppointmentEdit() {
   if (!editAppointment) return;
@@ -1328,6 +1395,71 @@ Mută / Editează
               </div>
             </>
           )}
+          {tab === "oferte" && (
+  <>
+    <h2 className="hero-title admin-section-title">Oferte ale lunii</h2>
+
+    <p className="section-lead">
+      Încarcă imaginea ofertei, iar oferta activă apare automat pe pagina principală.
+    </p>
+
+    <form onSubmit={uploadOffer} className="booking-form">
+      <label>
+        Titlu ofertă
+        <input
+          value={offerTitle}
+          onChange={(e) => setOfferTitle(e.target.value)}
+          placeholder="Ex: Oferta lunii"
+        />
+      </label>
+
+      <label>
+        Link când clienta apasă pe ofertă
+        <input
+          value={offerLink}
+          onChange={(e) => setOfferLink(e.target.value)}
+          placeholder="/programare?category=nails"
+        />
+      </label>
+
+      <label>
+        Poză ofertă
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setOfferFile(e.target.files?.[0] || null)}
+        />
+      </label>
+
+      <button className="btn-primary" type="submit">
+        Upload ofertă
+      </button>
+    </form>
+
+    <div className="gallery-admin-grid">
+      {offers.map((offer) => (
+        <div key={offer.id} className="gallery-admin-card">
+          <img src={offer.image_url} alt={offer.title || "Ofertă"} />
+
+          <p>
+            {offer.title || "Oferta lunii"} •{" "}
+            {offer.is_active ? "Activă" : "Inactivă"}
+          </p>
+
+          <div className="admin-actions">
+            <button onClick={() => toggleOffer(offer.id, offer.is_active)}>
+              {offer.is_active ? "Dezactivează" : "Activează"}
+            </button>
+
+            <button onClick={() => deleteOffer(offer.id)}>
+              Șterge
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </>
+)}
         </div>
       </section>
       {editAppointment && (
