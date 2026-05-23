@@ -5,9 +5,14 @@ import BottomNav from "../components/BottomNav";
 import "./globals.css";
 
 export const metadata = {
-  title: "Raluca Duran Nails | Nail Studio Ploiești",
+  title: "Raluca Duran Beauty | Nail Studio & Make-up Ploiești",
   description:
-    "Raluca Duran Nails - nail studio premium în Ploiești. Semi cu apex, gel, construcție, slim nails, întreținere, nail art și make-up.",
+    "Raluca Duran Beauty - nail studio premium și make-up profesional în Ploiești. Programări online rapide.",
+
+  verification: {
+    google: "GORpqnqmTdtj5fRKrEY0KS3QiKvCk6PgX0m_RvBroGc",
+  },
+
   manifest: "/manifest.webmanifest",
   themeColor: "#b7836e",
   appleWebApp: {
