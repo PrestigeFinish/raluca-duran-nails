@@ -740,6 +740,37 @@ const serviceStats = services
   .sort((a, b) => b.count - a.count)
   .slice(0, 5);
   const calendarAppointments = appointments.filter((a) => sameMonth(a.appointment_date, calendarMonth));
+  function sendReminderWhatsApp(appointment: any) {
+  const serviceName =
+    appointment.services?.name || appointment.service_name || "Programare";
+
+  const formattedDate = new Date(
+    appointment.appointment_date
+  ).toLocaleDateString("ro-RO");
+
+  const formattedTime = appointment.appointment_time?.slice(0, 5);
+
+  const message = encodeURIComponent(
+    `Bună ${appointment.client_name || ""}! 💖
+
+Îți reamintim programarea ta la Raluca Beauty:
+
+💅 Serviciu: ${serviceName}
+📅 Data: ${formattedDate}
+🕒 Ora: ${formattedTime}
+
+Te așteptăm cu drag! ✨`
+  );
+
+  const phone = appointment.client_phone?.replace(/\D/g, "");
+
+  if (!phone) {
+    alert("Clienta nu are număr de telefon.");
+    return;
+  }
+
+  window.open(`https://wa.me/4${phone}?text=${message}`, "_blank");
+}
   function addAppointmentToCalendar(appointment: any) {
   const start = new Date(
     `${appointment.appointment_date}T${appointment.appointment_time?.slice(0, 5)}:00`
@@ -1113,6 +1144,9 @@ Mută / Editează
                           <a href={`https://wa.me/4${String(appointment.client_phone).replace(/^0/, "")}`} target="_blank">
                             WhatsApp
                           </a>
+                          <button onClick={() => sendReminderWhatsApp(appointment)}>
+  Reminder WA
+</button>
                           <button onClick={() => addAppointmentToCalendar(appointment)}>
   Calendar
 </button>
