@@ -113,8 +113,16 @@ const futureAppointments = appointments.filter(
   const now = new Date();
 
 const upcomingAppointments = appointments.filter((a) => {
-  const appointmentDate = new Date(`${a.date}T${a.time}`);
-  return appointmentDate >= now && a.status !== "cancelled";
+  const appointmentDate = new Date(
+    `${a.appointment_date}T${a.appointment_time?.slice(0, 5)}`
+  );
+
+  return (
+    appointmentDate >= now &&
+    a.status !== "cancelled" &&
+    a.status !== "completed" &&
+    a.status !== "no_show"
+  );
 });
 
 const completedAppointments = appointments.filter((a) => {
