@@ -231,11 +231,11 @@ END:VCALENDAR
 
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
-  link.href = url;
-  link.download = "programare-raluca-beauty.ics";
-  link.click();
+  window.open(url, "_blank");
 
+setTimeout(() => {
   URL.revokeObjectURL(url);
+}, 3000);
 }
 
   async function submitBooking(e: React.FormEvent) {
