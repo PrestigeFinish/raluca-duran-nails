@@ -1,6 +1,17 @@
 import GallerySection from "../components/GallerySection";
-
-export default function Home() {
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+export default async function Home() {
+  const { data: activeOffer } = await supabase
+  .from("monthly_offers")
+  .select("*")
+  .eq("is_active", true)
+  .order("created_at", { ascending: false })
+  .limit(1)
+  .maybeSingle();
   const nailServices = [
   { name: "Semi cu apex", price: "80 lei" },
   { name: "Construcție gel", price: "130 lei" },
@@ -77,6 +88,26 @@ export default function Home() {
             </div>
           </div>
         </section>
+        {activeOffer && (
+  <section className="section">
+    <div className="container">
+      <a
+        href={activeOffer.target_link || "/programare?category=nails"}
+        style={{ display: "block" }}
+      >
+        <img
+          src={activeOffer.image_url}
+          alt={activeOffer.title || "Oferta lunii"}
+          style={{
+            width: "100%",
+            borderRadius: "24px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.18)",
+          }}
+        />
+      </a>
+    </div>
+  </section>
+)}
 
         <section className="premium-stats">
           <div className="container premium-stats-grid">
