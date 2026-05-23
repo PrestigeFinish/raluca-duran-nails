@@ -68,19 +68,23 @@ export default async function Home() {
                 Pentru momente speciale, studioul oferă și servicii de make-up.
               </p>
 
-              <div className="hero-actions">
-                <a href="/programare?category=nails" className="btn-primary">
-                  Programare Nails
-                </a>
+             <div className="hero-actions">
+  <a href="/programare?category=nails" className="btn-primary">
+    Programare Nails
+  </a>
 
-                <a href="/makeup" className="btn-secondary">
-                  Vezi Make-up
-                </a>
+  <a href="/makeup" className="btn-secondary">
+    Vezi Make-up
+  </a>
 
-                <a href="/login" className="btn-secondary">
-                  Intră în cont
-                </a>
-              </div>
+  <a href="/login" className="btn-secondary">
+    Intră în cont
+  </a>
+
+  <a href="/register" className="btn-secondary">
+    Creează cont
+  </a>
+</div>
             </div>
 
             <div className="premium-hero-visual clean-logo-visual">
