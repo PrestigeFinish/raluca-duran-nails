@@ -73,6 +73,7 @@ function ProgramareContent() {
   const [clientEmail, setClientEmail] = useState("");
   const [notes, setNotes] = useState("");
   const [message, setMessage] = useState("");
+  const [calendarBooking, setCalendarBooking] = useState<any>(null);
   const [loggedClient, setLoggedClient] = useState<any>(null);
 const [useReward, setUseReward] = useState(false);
 
@@ -195,6 +196,47 @@ const discountedPrice =
       return start < existingEnd && end > existingStart;
     });
   }
+  function addToCalendar() {
+  if (!calendarBooking) return;
+
+  const start = new Date(`${calendarBooking.date}T${calendarBooking.time}:00`);
+  const end = new Date(start);
+  end.setMinutes(end.getMinutes() + Number(calendarBooking.duration || 60));
+
+  function formatDate(date: Date) {
+    return date
+      .toISOString()
+      .replace(/[-:]/g, "")
+      .split(".")[0] + "Z";
+  }
+
+  const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Raluca Beauty//Booking//RO
+BEGIN:VEVENT
+UID:${Date.now()}@ralucabeauty.ro
+DTSTAMP:${formatDate(new Date())}
+DTSTART:${formatDate(start)}
+DTEND:${formatDate(end)}
+SUMMARY:Programare Raluca Beauty - ${calendarBooking.serviceName}
+DESCRIPTION:Programare la Raluca Beauty. Serviciu: ${calendarBooking.serviceName}
+END:VEVENT
+END:VCALENDAR
+`.trim();
+
+  const blob = new Blob([icsContent], {
+    type: "text/calendar;charset=utf-8",
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "programare-raluca-beauty.ics";
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
 
   async function submitBooking(e: React.FormEvent) {
     e.preventDefault();
@@ -247,6 +289,12 @@ client_auth_id: loggedClient?.auth_user_id || null,
     }
 
     setMessage("Programarea a fost trimisă cu succes 💖");
+    setCalendarBooking({
+  serviceName: selectedService?.name || "Programare",
+  date,
+  time,
+  duration: selectedService?.duration_minutes || 60,
+});
 
     setServiceId("");
     setDate("");
@@ -415,6 +463,15 @@ client_auth_id: loggedClient?.auth_user_id || null,
             </button>
 
             {message && <p className="booking-message">{message}</p>}
+            {calendarBooking && (
+  <button
+    type="button"
+    className="btn-secondary"
+    onClick={addToCalendar}
+  >
+    Adaugă în calendar
+  </button>
+)}
           </form>
         </div>
       </section>
