@@ -673,6 +673,60 @@ const serviceStats = services
   .sort((a, b) => b.count - a.count)
   .slice(0, 5);
   const calendarAppointments = appointments.filter((a) => sameMonth(a.appointment_date, calendarMonth));
+  function addAppointmentToCalendar(appointment: any) {
+  const start = new Date(
+    `${appointment.appointment_date}T${appointment.appointment_time?.slice(0, 5)}:00`
+  );
+
+  const end = appointment.end_time
+    ? new Date(`${appointment.appointment_date}T${appointment.end_time?.slice(0, 5)}:00`)
+    : new Date(start);
+
+  if (!appointment.end_time) {
+    end.setMinutes(
+      end.getMinutes() +
+        Number(appointment.services?.duration_minutes || 60) +
+        Number(appointment.services?.buffer_minutes || 0)
+    );
+  }
+
+  function formatDate(date: Date) {
+    return (
+      date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+    );
+  }
+
+  const clientName = appointment.client_name || "Clientă";
+  const serviceName = appointment.services?.name || "Serviciu";
+  const phone = appointment.client_phone || "-";
+  const notes = appointment.notes || "-";
+
+  const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Raluca Beauty//Admin Booking//RO
+BEGIN:VEVENT
+UID:${appointment.id || Date.now()}@ralucabeauty.ro
+DTSTAMP:${formatDate(new Date())}
+DTSTART:${formatDate(start)}
+DTEND:${formatDate(end)}
+SUMMARY:${serviceName} - ${clientName}
+DESCRIPTION:Clientă: ${clientName}\\nTelefon: ${phone}\\nServiciu: ${serviceName}\\nObservații: ${notes}
+END:VEVENT
+END:VCALENDAR
+`.trim();
+
+  const blob = new Blob([icsContent], {
+    type: "text/calendar;charset=utf-8",
+  });
+
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 3000);
+}
 
   return (
     <main>
@@ -736,6 +790,11 @@ const serviceStats = services
                     <p><strong>Ora:</strong> {appointment.appointment_time?.slice(0, 5)} - {appointment.end_time?.slice(0, 5) || "?"}</p>
                     <p><strong>Serviciu:</strong> {appointment.services?.name}</p>
                     <p><strong>Preț:</strong> {appointment.services?.price || appointment.total_price || "-"}</p>
+                    <div className="admin-actions">
+  <button onClick={() => addAppointmentToCalendar(appointment)}>
+    Calendar
+  </button>
+</div>
                   </div>
                 ))}
               </div>
@@ -987,6 +1046,9 @@ Mută / Editează
                           <a href={`https://wa.me/4${String(appointment.client_phone).replace(/^0/, "")}`} target="_blank">
                             WhatsApp
                           </a>
+                          <button onClick={() => addAppointmentToCalendar(appointment)}>
+  Calendar
+</button>
                         </div>
                       </div>
                     ))}
