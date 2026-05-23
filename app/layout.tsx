@@ -33,6 +33,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ro">
+      <head>
+  <Script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-62WLFF66XV"
+  />
+
+  <Script id="google-analytics">
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-62WLEF66XW');
+    `}
+  </Script>
+</head>
       <body>
         {children}
         <NotificationButton />
