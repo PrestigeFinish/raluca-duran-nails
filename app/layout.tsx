@@ -1,6 +1,4 @@
 import Script from "next/script";
-import NotificationButton from "../components/NotificationButton";
-import InstallAppPrompt from "../components/InstallAppPrompt";
 import BottomNav from "../components/BottomNav";
 import "./globals.css";
 
@@ -50,8 +48,6 @@ export default function RootLayout({
 </head>
       <body>
         {children}
-        <NotificationButton />
-        <InstallAppPrompt />
         <BottomNav />
 
         <Script
