@@ -751,15 +751,15 @@ const serviceStats = services
   const formattedTime = appointment.appointment_time?.slice(0, 5);
 
   const message = encodeURIComponent(
-    `Bună ${appointment.client_name || ""}! 💖
+    `Bună ${appointment.client_name || ""}! 
 
 Îți reamintim programarea ta la Raluca Beauty:
 
-💅 Serviciu: ${serviceName}
-📅 Data: ${formattedDate}
-🕒 Ora: ${formattedTime}
+ Serviciu: ${serviceName}
+ Data: ${formattedDate}
+ Ora: ${formattedTime}
 
-Te așteptăm cu drag! ✨`
+Te așteptăm cu drag! `
   );
 
   const phone = appointment.client_phone?.replace(/\D/g, "");
