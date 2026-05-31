@@ -137,18 +137,30 @@ export default async function Home() {
 
         <section className="section" id="services">
           <div className="container">
-            <h2 className="hero-title section-title">Servicii & Prețuri Nails</h2>
-            <p className="section-lead">
-              Alege serviciul potrivit pentru stilul tău. Pentru nail art,
-              prețul poate varia în funcție de complexitatea modelului.
-            </p>
+            <div
+  style={{
+    maxWidth: "800px",
+    margin: "0 auto",
+    textAlign: "center",
+    padding: "40px 20px",
+    borderRadius: "24px",
+    background: "rgba(255,255,255,0.65)",
+    backdropFilter: "blur(12px)",
+  }}
+>
+  <h3 style={{ marginBottom: "16px" }}>
+    Descoperă toate serviciile și prețurile
+  </h3>
 
-            <div className="services-grid premium-price-grid">
-              {nailServices.map((service, index) => (
-                <div key={index} className="service-card premium-price-card">
-                  <span>{service.name}</span>
-                  <strong>{service.price}</strong>
-                </div>
+  <p style={{ marginBottom: "24px" }}>
+    Creează-ți un cont sau autentifică-te pentru a vedea lista completă de
+    servicii, prețuri și beneficii loyalty.
+  </p>
+
+  <a href="/login" className="btn-primary">
+    Intră în cont pentru a vedea prețurile
+  </a>
+</div>
               ))}
             </div>
             <p className="section-lead" style={{ marginTop: 28 }}>
