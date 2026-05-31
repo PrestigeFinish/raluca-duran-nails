@@ -1,362 +1,253 @@
-import GallerySection from "../components/GallerySection";
-import { createClient } from "@supabase/supabase-js";
+import GallerySection from "../components/GallerySection";import { createClient } from "@supabase/supabase-js";export const dynamic = "force-dynamic";const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);export default async function Home() {const { data: activeOffer } = await supabase.from("monthly_offers").select("*").eq("is_active", true).order("created_at", { ascending: false }).limit(1).maybeSingle();const nailServices = [{ name: "Semi cu apex", price: "80 lei" },{ name: "Construcție gel", price: "130 lei" },{ name: "Întreținere gel", price: "110 lei" },{ name: "Slim construcție", price: "150 lei" },{ name: "Slim întreținere", price: "130 lei" },{ name: "Demontare", price: "80 lei" },{ name: "French glass", price: "+50 lei" },{ name: "Nail art, stickere și decorațiuni", price: "Incluse în preț" },];
 
-export const dynamic = "force-dynamic";
+return (<>
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+      <div className="nav-links">
+        <a href="#services">Nails</a>
+        <a href="/makeup">Make-up</a>
+        <a href="#gallery">Galerie</a>
+        <a href="#loyalty">Loyalty</a>
+        <a href="/login">Cont</a>
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+        <a href="/programare?category=nails" className="btn-primary">
+          Programare
+        </a>
+      </div>
+    </div>
+  </nav>
 
-export default async function Home() {
-  const { data: activeOffer } = await supabase
-    .from("monthly_offers")
-    .select("*")
-    .eq("is_active", true)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+  <main>
+    <section className="premium-hero">
+      <div className="container premium-hero-grid">
+        <div className="premium-hero-content">
+          <p className="premium-kicker">Nails • Make-up • Ploiești</p>
 
-  return (
-    <>
-      <nav className="navbar premium-nav">
-        <div className="container nav-inner">
-          <a href="/">
-            <img className="nav-logo" src="/logo.png" alt="Raluca Duran Nails" />
+          <h1 className="hero-title premium-title">
+            Nail studio by
+            <br />
+            Raluca Duran
+          </h1>
+
+          <p className="beauty-signature">
+            Beauty experience by Raluca Duran
+          </p>
+
+          <p className="premium-text">
+            Manichiuri elegante, feminine și atent lucrate: semi cu apex,
+            gel, construcție, întreținere, slim nails și nail art.
+            Pentru momente speciale, studioul oferă și servicii de make-up.
+          </p>
+
+         <div className="hero-actions">
+
+        <div className="premium-hero-visual clean-logo-visual">
+          <img src="/logo.png" alt="Raluca Duran Nails" />
+        </div>
+      </div>
+    </section>
+    {activeOffer && (
+
+    <section className="premium-stats">
+      <div className="container premium-stats-grid">
+        <div>
+          <strong>Nails</strong>
+          <span>semi, gel, slim & art</span>
+        </div>
+        <div>
+          <strong>Make-up</strong>
+          <span>evenimente & glam</span>
+        </div>
+        <div>
+          <strong>Online</strong>
+          <span>programări rapide</span>
+        </div>
+        <div>
+          <strong>Rewards</strong>
+          <span>puncte loyalty</span>
+        </div>
+      </div>
+    </section>
+
+    <section className="section" id="services">
+      <div className="container">
+        <h2 className="hero-title section-title">Servicii & Prețuri Nails</h2>
+        <p className="section-lead">
+          Alege serviciul potrivit pentru stilul tău. Pentru nail art,
+          prețul poate varia în funcție de complexitatea modelului.
+        </p>
+
+        <div className="services-grid premium-price-grid">
+          {nailServices.map((service, index) => (
+            <div key={index} className="service-card premium-price-card">
+              <span>{service.name}</span>
+              <strong>{service.price}</strong>
+            </div>
+          ))}
+        </div>
+        <p className="section-lead" style={{ marginTop: 28 }}>
+
+Pentru construcții / întrețineri peste mărimea 4 se adaugă +10 lei / mărime.
+
+        <div className="center-actions">
+          <a href="/programare?category=nails" className="btn-primary">
+            Programează Nails
           </a>
+        </div>
+      </div>
+    </section>
 
-          <div className="nav-links">
-            <a href="#services">Nails</a>
-            <a href="/makeup">Make-up</a>
-            <a href="#gallery">Galerie</a>
-            <a href="#loyalty">Loyalty</a>
-            <a href="/login">Cont</a>
-            <a href="#">Instagram</a>
-            <a href="#">TikTok</a>
-            <a href="/programare?category=nails" className="btn-primary">
-              Programare
+    <section className="section section-soft">
+      <div className="container">
+        <div className="premium-makeup-banner">
+          <div>
+            <p className="premium-kicker">Make-up by Raluca Duran</p>
+            <h2 className="hero-title section-title">
+              Look complet pentru evenimente
+            </h2>
+            <p>
+              Machiaj elegant, feminin și luminos pentru evenimente, ședințe
+              foto, ocazii speciale și momente în care vrei să te simți impecabil.
+            </p>
+          </div>
+
+          <div className="makeup-banner-actions">
+            <a href="/makeup" className="btn-primary">
+              Deschide pagina Make-up
+            </a>
+            <a href="/programare?category=makeup" className="btn-secondary">
+              Programare Make-up
             </a>
           </div>
         </div>
-      </nav>
+      </div>
+    </section>
 
-      <main>
-        <section className="premium-hero">
-          <div className="container premium-hero-grid">
-            <div className="premium-hero-content">
-              <p className="premium-kicker">Nails • Make-up • Ploiești</p>
+    <section className="section section-soft" id="gallery">
+      <div className="container">
+        <h2 className="hero-title section-title">Galerie Nails</h2>
+        <p className="section-lead">
+          Galerie administrabilă din admin. Pozele încărcate pentru Nails apar automat aici.
+        </p>
 
-              <h1 className="hero-title premium-title">
-                Nail studio by
-                <br />
-                Raluca Duran
-              </h1>
+        <div className="premium-gallery-frame">
+          <GallerySection category="nails" />
+        </div>
+      </div>
+    </section>
 
-              <p className="beauty-signature">
-                Beauty experience by Raluca Duran
-              </p>
+    <section className="section">
+      <div className="container">
+        <h2 className="hero-title section-title">De ce Raluca Duran Beauty</h2>
 
-              <p className="premium-text">
-                Manichiuri elegante, feminine și atent lucrate: semi cu apex,
-                gel, construcție, întreținere, slim nails și nail art.
-                Pentru momente speciale, studioul oferă și servicii de make-up.
-              </p>
-
-              <div className="hero-actions">
-                <a href="/programare?category=nails" className="btn-primary">
-                  Programare Nails
-                </a>
-
-                <a href="/makeup" className="btn-secondary">
-                  Vezi Make-up
-                </a>
-
-                <a href="/login" className="btn-secondary">
-                  Intră în cont
-                </a>
-
-                <a href="/register" className="btn-secondary">
-                  Creează cont
-                </a>
-              </div>
-            </div>
-
-            <div className="premium-hero-visual clean-logo-visual">
-              <img src="/logo.png" alt="Raluca Duran Nails" />
-            </div>
-          </div>
-        </section>
-
-        {activeOffer && (
-          <section className="section">
-            <div className="container">
-              <a
-                href={activeOffer.target_link || "/programare?category=nails"}
-                style={{ display: "block" }}
-              >
-                <img
-                  src={activeOffer.image_url}
-                  alt={activeOffer.title || "Oferta lunii"}
-                  style={{
-                    width: "100%",
-                    borderRadius: "24px",
-                    boxShadow: "0 20px 60px rgba(0,0,0,0.18)",
-                  }}
-                />
-              </a>
-            </div>
-          </section>
-        )}
-
-        <section className="premium-stats">
-          <div className="container premium-stats-grid">
-            <div>
-              <strong>Nails</strong>
-              <span>semi, gel, slim & art</span>
-            </div>
-            <div>
-              <strong>Make-up</strong>
-              <span>evenimente & glam</span>
-            </div>
-            <div>
-              <strong>Online</strong>
-              <span>programări rapide</span>
-            </div>
-            <div>
-              <strong>Rewards</strong>
-              <span>puncte loyalty</span>
-            </div>
-          </div>
-        </section>
-
-        <section className="section" id="services">
-          <div className="container">
-            <h2 className="hero-title section-title">Servicii Nails</h2>
-
-            <p className="section-lead">
-              Serviciile sunt personalizate în funcție de stil, complexitate și
-              detaliile dorite. Lista completă de servicii și prețuri este
-              disponibilă în contul de clientă.
-            </p>
-
-            <div
-              style={{
-                maxWidth: "860px",
-                margin: "0 auto",
-                textAlign: "center",
-                padding: "44px 24px",
-                borderRadius: "28px",
-                background: "rgba(255, 248, 243, 0.92)",
-                border: "1px solid rgba(183, 131, 110, 0.22)",
-                boxShadow: "0 24px 70px rgba(58, 39, 31, 0.08)",
-              }}
-            >
-              <p className="premium-kicker" style={{ marginBottom: 14 }}>
-                Servicii & prețuri
-              </p>
-
-              <h3
-                className="hero-title"
-                style={{
-                  fontSize: 42,
-                  lineHeight: 1.1,
-                  marginBottom: 16,
-                }}
-              >
-                Intră în cont pentru lista completă
-              </h3>
-
-              <p
-                style={{
-                  maxWidth: 620,
-                  margin: "0 auto 26px",
-                  color: "#65554c",
-                  lineHeight: 1.8,
-                  fontSize: 18,
-                }}
-              >
-                Creează-ți cont sau autentifică-te pentru a vedea serviciile,
-                prețurile actualizate, beneficiile loyalty și programările tale.
-              </p>
-
-              <div
-                className="hero-actions"
-                style={{ justifyContent: "center", marginTop: 10 }}
-              >
-                <a href="/login" className="btn-primary">
-                  Vezi serviciile și prețurile
-                </a>
-
-                <a href="/register" className="btn-secondary">
-                  Creează cont
-                </a>
-              </div>
-            </div>
-
-            <p className="section-lead" style={{ marginTop: 28 }}>
-              Pentru construcții / întrețineri peste mărimea 4 se poate adăuga
-              cost suplimentar în funcție de mărime și complexitate.
-            </p>
-
-            <div className="center-actions">
-              <a href="/programare?category=nails" className="btn-primary">
-                Programează Nails
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section className="section section-soft">
-          <div className="container">
-            <div className="premium-makeup-banner">
-              <div>
-                <p className="premium-kicker">Make-up by Raluca Duran</p>
-                <h2 className="hero-title section-title">
-                  Look complet pentru evenimente
-                </h2>
-                <p>
-                  Machiaj elegant, feminin și luminos pentru evenimente, ședințe
-                  foto, ocazii speciale și momente în care vrei să te simți impecabil.
-                </p>
-              </div>
-
-              <div className="makeup-banner-actions">
-                <a href="/makeup" className="btn-primary">
-                  Deschide pagina Make-up
-                </a>
-                <a href="/programare?category=makeup" className="btn-secondary">
-                  Programare Make-up
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section section-soft" id="gallery">
-          <div className="container">
-            <h2 className="hero-title section-title">Galerie Nails</h2>
-            <p className="section-lead">
-              Galerie administrabilă din admin. Pozele încărcate pentru Nails apar automat aici.
-            </p>
-
-            <div className="premium-gallery-frame">
-              <GallerySection category="nails" />
-            </div>
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="container">
-            <h2 className="hero-title section-title">De ce Raluca Duran Beauty</h2>
-
-            <div className="premium-why-grid">
-              <div>
-                <strong>01</strong>
-                <h3>Detalii curate</h3>
-                <p>Lucrări feminine, elegante și atent finisate.</p>
-              </div>
-
-              <div>
-                <strong>02</strong>
-                <h3>Booking online</h3>
-                <p>Alegi serviciul, data și ora direct pe site.</p>
-              </div>
-
-              <div>
-                <strong>03</strong>
-                <h3>Cont client</h3>
-                <p>Vezi programările, istoricul, punctele și reducerile.</p>
-              </div>
-
-              <div>
-                <strong>04</strong>
-                <h3>Loyalty</h3>
-                <p>Strângi puncte și primești reduceri până la 20%.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="premium-loyalty" id="loyalty">
-          <div className="container premium-loyalty-box">
-            <div>
-              <p className="premium-kicker">Beauty rewards</p>
-              <h2 className="hero-title section-title">
-                Loyalty pentru clientele care revin
-              </h2>
-              <p>
-                La fiecare programare finalizată primești puncte. 5 puncte =
-                5% reducere, 10 puncte = 10%, până la 20%.
-              </p>
-            </div>
-
-            <div className="loyalty-card">
-              <strong>5 puncte</strong>
-              <span>5% reducere</span>
-              <strong>10 puncte</strong>
-              <span>10% reducere</span>
-              <strong>20 puncte</strong>
-              <span>20% reducere</span>
-
-              <a href="/register" className="btn-primary">
-                Creează cont
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="container premium-cta">
-            <h2 className="hero-title section-title">
-              Ești pregătită pentru următoarea programare?
-            </h2>
-
-            <p className="section-lead">
-              Alege serviciul, data și ora. Totul este rapid, clar și elegant.
-            </p>
-
-            <div className="hero-actions" style={{ justifyContent: "center" }}>
-              <a href="/programare?category=nails" className="btn-primary">
-                Programare Nails
-              </a>
-              <a href="/programare?category=makeup" className="btn-secondary">
-                Programare Make-up
-              </a>
-              <a href="/login" className="btn-secondary">
-                Cont client
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <footer className="premium-footer">
-          <div className="container premium-footer-grid">
-            <div>
-              <img className="footer-logo" src="/logo.png" alt="Raluca Duran Beauty" />
-              <p>Raluca Duran Beauty • Nails & Make-up</p>
-            </div>
-
-            <div>
-              <h3>Pagini</h3>
-              <a href="/">Nails</a>
-              <a href="/makeup">Make-up</a>
-              <a href="/programare?category=nails">Booking Nails</a>
-              <a href="/programare?category=makeup">Booking Make-up</a>
-              <a href="/login">Cont client</a>
-            </div>
-
-            <div>
-              <h3>Social & contact</h3>
-              <a href="tel:0727707545">0727 707 545</a>
-              <a href="#">WhatsApp link aici</a>
-              <a href="#">Instagram link aici</a>
-              <a href="#">TikTok link aici</a>
-            </div>
+        <div className="premium-why-grid">
+          <div>
+            <strong>01</strong>
+            <h3>Detalii curate</h3>
+            <p>Lucrări feminine, elegante și atent finisate.</p>
           </div>
 
-          <p className="footer-copy">© 2026 Raluca Duran Beauty</p>
-        </footer>
-      </main>
-    </>
-  );
-}
+          <div>
+            <strong>02</strong>
+            <h3>Booking online</h3>
+            <p>Alegi serviciul, data și ora direct pe site.</p>
+          </div>
+
+          <div>
+            <strong>03</strong>
+            <h3>Cont client</h3>
+            <p>Vezi programările, istoricul, punctele și reducerile.</p>
+          </div>
+
+          <div>
+            <strong>04</strong>
+            <h3>Loyalty</h3>
+            <p>Strângi puncte și primești reduceri până la 20%.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section className="premium-loyalty" id="loyalty">
+      <div className="container premium-loyalty-box">
+        <div>
+          <p className="premium-kicker">Beauty rewards</p>
+          <h2 className="hero-title section-title">
+            Loyalty pentru clientele care revin
+          </h2>
+          <p>
+            La fiecare programare finalizată primești puncte. 5 puncte =
+            5% reducere, 10 puncte = 10%, până la 20%.
+          </p>
+        </div>
+
+        <div className="loyalty-card">
+          <strong>5 puncte</strong>
+          <span>5% reducere</span>
+          <strong>10 puncte</strong>
+          <span>10% reducere</span>
+          <strong>20 puncte</strong>
+          <span>20% reducere</span>
+
+          <a href="/register" className="btn-primary">
+            Creează cont
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section className="section">
+      <div className="container premium-cta">
+        <h2 className="hero-title section-title">
+          Ești pregătită pentru următoarea programare?
+        </h2>
+
+        <p className="section-lead">
+          Alege serviciul, data și ora. Totul este rapid, clar și elegant.
+        </p>
+
+        <div className="hero-actions" style={{ justifyContent: "center" }}>
+          <a href="/programare?category=nails" className="btn-primary">
+            Programare Nails
+          </a>
+          <a href="/programare?category=makeup" className="btn-secondary">
+            Programare Make-up
+          </a>
+          <a href="/login" className="btn-secondary">
+            Cont client
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer className="premium-footer">
+      <div className="container premium-footer-grid">
+        <div>
+          <img className="footer-logo" src="/logo.png" alt="Raluca Duran Beauty" />
+          <p>Raluca Duran Beauty • Nails & Make-up</p>
+        </div>
+
+        <div>
+          <h3>Pagini</h3>
+          <a href="/">Nails</a>
+          <a href="/makeup">Make-up</a>
+          <a href="/programare?category=nails">Booking Nails</a>
+          <a href="/programare?category=makeup">Booking Make-up</a>
+          <a href="/login">Cont client</a>
+        </div>
+
+        <div>
+          <h3>Social & contact</h3>
+          <a href="tel:0727707545">0727 707 545</a>
+          <a href="#">WhatsApp link aici</a>
+          <a href="#">Instagram link aici</a>
+          <a href="#">TikTok link aici</a>
+        </div>
+      </div>
+
+      <p className="footer-copy">© 2026 Raluca Duran Beauty</p>
+    </footer>
+  </main>
+</>
+
+);}
