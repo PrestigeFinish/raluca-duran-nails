@@ -1,28 +1,21 @@
 import GallerySection from "../components/GallerySection";
 import { createClient } from "@supabase/supabase-js";
+
 export const dynamic = "force-dynamic";
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+
 export default async function Home() {
   const { data: activeOffer } = await supabase
-  .from("monthly_offers")
-  .select("*")
-  .eq("is_active", true)
-  .order("created_at", { ascending: false })
-  .limit(1)
-  .maybeSingle();
-  const nailServices = [
-  { name: "Semi cu apex", price: "80 lei" },
-  { name: "Construcție gel", price: "130 lei" },
-  { name: "Întreținere gel", price: "110 lei" },
-  { name: "Slim construcție", price: "150 lei" },
-  { name: "Slim întreținere", price: "130 lei" },
-  { name: "Demontare", price: "80 lei" },
-  { name: "French glass", price: "+50 lei" },
-  { name: "Nail art, stickere și decorațiuni", price: "Incluse în preț" },
-];
+    .from("monthly_offers")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   return (
     <>
@@ -69,23 +62,23 @@ export default async function Home() {
                 Pentru momente speciale, studioul oferă și servicii de make-up.
               </p>
 
-             <div className="hero-actions">
-  <a href="/programare?category=nails" className="btn-primary">
-    Programare Nails
-  </a>
+              <div className="hero-actions">
+                <a href="/programare?category=nails" className="btn-primary">
+                  Programare Nails
+                </a>
 
-  <a href="/makeup" className="btn-secondary">
-    Vezi Make-up
-  </a>
+                <a href="/makeup" className="btn-secondary">
+                  Vezi Make-up
+                </a>
 
-  <a href="/login" className="btn-secondary">
-    Intră în cont
-  </a>
+                <a href="/login" className="btn-secondary">
+                  Intră în cont
+                </a>
 
-  <a href="/register" className="btn-secondary">
-    Creează cont
-  </a>
-</div>
+                <a href="/register" className="btn-secondary">
+                  Creează cont
+                </a>
+              </div>
             </div>
 
             <div className="premium-hero-visual clean-logo-visual">
@@ -93,26 +86,27 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
         {activeOffer && (
-  <section className="section">
-    <div className="container">
-      <a
-        href={activeOffer.target_link || "/programare?category=nails"}
-        style={{ display: "block" }}
-      >
-        <img
-          src={activeOffer.image_url}
-          alt={activeOffer.title || "Oferta lunii"}
-          style={{
-            width: "100%",
-            borderRadius: "24px",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.18)",
-          }}
-        />
-      </a>
-    </div>
-  </section>
-)}
+          <section className="section">
+            <div className="container">
+              <a
+                href={activeOffer.target_link || "/programare?category=nails"}
+                style={{ display: "block" }}
+              >
+                <img
+                  src={activeOffer.image_url}
+                  alt={activeOffer.title || "Oferta lunii"}
+                  style={{
+                    width: "100%",
+                    borderRadius: "24px",
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.18)",
+                  }}
+                />
+              </a>
+            </div>
+          </section>
+        )}
 
         <section className="premium-stats">
           <div className="container premium-stats-grid">
@@ -137,35 +131,72 @@ export default async function Home() {
 
         <section className="section" id="services">
           <div className="container">
+            <h2 className="hero-title section-title">Servicii Nails</h2>
+
+            <p className="section-lead">
+              Serviciile sunt personalizate în funcție de stil, complexitate și
+              detaliile dorite. Lista completă de servicii și prețuri este
+              disponibilă în contul de clientă.
+            </p>
+
             <div
-  style={{
-    maxWidth: "800px",
-    margin: "0 auto",
-    textAlign: "center",
-    padding: "40px 20px",
-    borderRadius: "24px",
-    background: "rgba(255,255,255,0.65)",
-    backdropFilter: "blur(12px)",
-  }}
->
-  <h3 style={{ marginBottom: "16px" }}>
-    Descoperă toate serviciile și prețurile
-  </h3>
+              style={{
+                maxWidth: "860px",
+                margin: "0 auto",
+                textAlign: "center",
+                padding: "44px 24px",
+                borderRadius: "28px",
+                background: "rgba(255, 248, 243, 0.92)",
+                border: "1px solid rgba(183, 131, 110, 0.22)",
+                boxShadow: "0 24px 70px rgba(58, 39, 31, 0.08)",
+              }}
+            >
+              <p className="premium-kicker" style={{ marginBottom: 14 }}>
+                Servicii & prețuri
+              </p>
 
-  <p style={{ marginBottom: "24px" }}>
-    Creează-ți un cont sau autentifică-te pentru a vedea lista completă de
-    servicii, prețuri și beneficii loyalty.
-  </p>
+              <h3
+                className="hero-title"
+                style={{
+                  fontSize: 42,
+                  lineHeight: 1.1,
+                  marginBottom: 16,
+                }}
+              >
+                Intră în cont pentru lista completă
+              </h3>
 
-  <a href="/login" className="btn-primary">
-    Intră în cont pentru a vedea prețurile
-  </a>
-</div>
-              ))}
+              <p
+                style={{
+                  maxWidth: 620,
+                  margin: "0 auto 26px",
+                  color: "#65554c",
+                  lineHeight: 1.8,
+                  fontSize: 18,
+                }}
+              >
+                Creează-ți cont sau autentifică-te pentru a vedea serviciile,
+                prețurile actualizate, beneficiile loyalty și programările tale.
+              </p>
+
+              <div
+                className="hero-actions"
+                style={{ justifyContent: "center", marginTop: 10 }}
+              >
+                <a href="/login" className="btn-primary">
+                  Vezi serviciile și prețurile
+                </a>
+
+                <a href="/register" className="btn-secondary">
+                  Creează cont
+                </a>
+              </div>
             </div>
+
             <p className="section-lead" style={{ marginTop: 28 }}>
-  Pentru construcții / întrețineri peste mărimea 4 se adaugă +10 lei / mărime.
-</p>
+              Pentru construcții / întrețineri peste mărimea 4 se poate adăuga
+              cost suplimentar în funcție de mărime și complexitate.
+            </p>
 
             <div className="center-actions">
               <a href="/programare?category=nails" className="btn-primary">
